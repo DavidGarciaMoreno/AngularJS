@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/ -->
+<html lang="en-CA"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="google-site-verification" content="SoRdaMh9ysy7oC2MBgBduV4eBUxqNK40i5q7u5ujh-8">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="pingback" href="http://4dev.tech/xmlrpc.php">
+	<title>Creating a Live Auction App with Angular 2, Node.js and Socket.IO | 4Dev Web Development Tutorials</title>
+<link rel="alternate" type="application/rss+xml" title="4Dev Web Development Tutorials » Feed" href="http://4dev.tech/feed/">
+<link rel="alternate" type="application/rss+xml" title="4Dev Web Development Tutorials » Comments Feed" href="http://4dev.tech/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="4Dev Web Development Tutorials » Creating a Live Auction App with Angular 2, Node.js and Socket.IO Comments Feed" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/feed/">
+		<script src="./CreatingLiveAuctionApp_files/ca-pub-2385181970702192.js"></script><script type="text/javascript" async="" src="./CreatingLiveAuctionApp_files/ga.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/4dev.tech\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.9"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./CreatingLiveAuctionApp_files/wp-emoji-release.min.js" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="star_rating_style-css" href="./CreatingLiveAuctionApp_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="ParaAdmin-css" href="./CreatingLiveAuctionApp_files/ParaAdmin.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-color-picker-css" href="./CreatingLiveAuctionApp_files/color-picker.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="star-rating-style-flat-css" href="./CreatingLiveAuctionApp_files/style(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="crafty-social-buttons-styles-css" href="./CreatingLiveAuctionApp_files/public.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="jsj_code_highlight-github_theme-css" href="./CreatingLiveAuctionApp_files/github.css" type="text/css" media="all">
+<link rel="stylesheet" id="jsj_code_highlight_client_style-css" href="./CreatingLiveAuctionApp_files/client-style.css" type="text/css" media="all">
+<link rel="stylesheet" id="jsj_code_highlight-source_code_pro_font_style-css" href="./CreatingLiveAuctionApp_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="vscf_style-css" href="./CreatingLiveAuctionApp_files/vscf_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="front-css-yuzo_related_post-css" href="./CreatingLiveAuctionApp_files/style(2).css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./CreatingLiveAuctionApp_files/wp-syntax.css" type="text/css" media="all">
+<link rel="stylesheet" id="owl-carousel-css" href="./CreatingLiveAuctionApp_files/owl.carousel.css" type="text/css" media="all">
+<link rel="stylesheet" id="dashicons-css" href="./CreatingLiveAuctionApp_files/dashicons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="elite-main-css" href="./CreatingLiveAuctionApp_files/main.css" type="text/css" media="all">
+<link rel="stylesheet" id="elite-responsive-css" href="./CreatingLiveAuctionApp_files/responsive.css" type="text/css" media="screen">
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/jquery.js"></script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var star_rating_ajax = {"star_rating_ajaxurl":"http:\/\/4dev.tech\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/star-rating-scripts.js"></script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/ParaAdmin.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://4dev.tech/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://4dev.tech/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="How to Execute a .jar File with Node.js Child Processes" href="http://4dev.tech/2016/02/how-to-execute-a-jar-file-with-node-js-child-processes/">
+<link rel="next" title="Tutorial: Angular 2 Datatable with Sorting, Filtering and Resizable Columns" href="http://4dev.tech/2016/02/tutorial-angular-2-datatable-with-sorting-filtering-and-resizable-columns/">
+<meta name="generator" content="WordPress 4.2.9">
+<link rel="canonical" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/">
+<link rel="shortlink" href="http://4dev.tech/?p=994">
+<!-- This site uses the Better Analytics plugin.  https://marketplace.digitalpoint.com/better-analytics.3354/item -->
+<meta id="ba_s" data-o="{&quot;tid&quot;:&quot;UA-66395671-1&quot;,&quot;co&quot;:&quot;auto&quot;,&quot;g&quot;:68588,&quot;dl&quot;:&quot;\\.avi|\\.doc|\\.exe|\\.gz|\\.mpg|\\.mp3|\\.pdf|\\.ppt|\\.psd|\\.rar|\\.wmv|\\.xls|\\.zip&quot;,&quot;s&quot;:0,&quot;a&quot;:0,&quot;d&quot;:{&quot;c&quot;:[1,&quot;Angular 2,AngularJS,Node.js&quot;],&quot;t&quot;:[2,&quot;Angular 2,AngularJS,Node.js,Real-time Applications,Socket.IO,WebSocket&quot;]}}">
+<script async="async" type="text/javascript" src="./CreatingLiveAuctionApp_files/loader.php"></script><link rel="shortcut icon" href="http://4dev.tech/wp-content/uploads/2016/03/icon4dev1.png"><script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-00000000-0']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<meta name="keywords" content="Angular 2, AngularJS, Node.js, Real-time Applications, Socket.IO, WebSocket">
+<link rel="amphtml" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/amp/"><meta data-pso-pv="1.2.0" data-pso-pt="singlePost" data-pso-th="eee1e405d0a4bde86c09b6e7472e2300"><script async="" src="./CreatingLiveAuctionApp_files/adsbygoogle.js"></script><script pagespeed_no_defer="" data-pso-version="20160314_111309">window.dynamicgoogletags={config:[]};dynamicgoogletags.config=["ca-pub-2385181970702192",[[[["DIV",0,,["posted-entry"],0],["10px","20px",0],0,[0],"3824194060",1,,,11],[["ASIDE",,"tag_cloud-2",[]],["10px","10px",0],2,[0],"7450691262",0,,,8],[["ASIDE",,"tag_cloud-2",[]],["10px","30px",0],3,[0],"1928658464",0,,,8]]],[[[[,[[0,19]],,16,1,1],[,[[20,20]],,34,1,1],[,[[180,199]],,17,1,1],[,[[320,339]],,32,1,1]],[[["BODY",0,,[]],["10px","10px",1],1,[4],,0,,,2],[["BODY",0,,[]],["10px","10px",1],2,[5],,0,,,2],[["HEADER",0,,[]],["10px","30px",1],3,[2],,0,,,4],[["DIV",,"respond",[]],["10px","50px",1],0,[1],,0,,,9],[["DIV",,"respond",[]],["10px","10px",1],3,[1],,0,,,9],[["DIV",,"primary-sidebar",[]],["10px","10px",1],3,[3],,0,,,7],[["ASIDE",,"categories-2",[]],["10px","30px",1],3,[1],,0,,,8],[["ASIDE",,"recent-posts-2",[]],["10px","30px",1],3,[1],,0,,,8],[["ASIDE",,"tag_cloud-2",[]],["10px","10px",1],2,[0],,0,,,8],[["ASIDE",,"tag_cloud-2",[]],["10px","30px",1],3,[0],,0,,,8],[["DIV",,,["logo-footer"]],["45px","10px",1],0,[3],,0,,,6],[["DIV",,,["logo-footer"]],["45px","45px",1],3,[5],,0,,,6],[["DIV",,,["site-info"]],["10px","45px",1],3,[5],,0,,,6],[["DIV",0,,["posted-entry"],0],["10px","20px",0],0,[0],,0,,,11],[["DIV",0,,["posted-entry"],1],["10px","24px",0],0,[0],,0,,,11],[["DIV",0,,["posted-entry"],2],["10px","19.5px",0],0,[0],,0,,,11],[["DIV",0,,["posted-entry"],-1],["10px","24px",0],3,[0],,0,,,11],[["DIV",,,["subHeader"]],["10px","10px",1],0,[2],,0,,,5]],["5903029666","7379762860","8856496062","1333229260","2809962460"],["DIV",,,["posted-entry"]],"20160314_051004"]],"WordPressSinglePost","9091998463",,0.01,,[,1459208115975],0.01,1,,,"http://4dev.tech"];(function(){var h,r=this,aa=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
+else if("function"==b&&"undefined"==typeof a.call)return"object";return b},t=function(a){return"number"==typeof a},ba=function(a,b){var c=Array.prototype.slice.call(arguments,1);return function(){var b=c.slice();b.push.apply(b,arguments);return a.apply(this,b)}},ca=Date.now||function(){return+new Date},u=function(a,b){function c(){}c.prototype=b.prototype;a.ra=b.prototype;a.prototype=new c;a.prototype.constructor=a;a.ta=function(a,c,f){for(var g=Array(arguments.length-2),k=2;k<arguments.length;k++)g[k-
+2]=arguments[k];return b.prototype[c].apply(a,g)}};var v=function(a){return a.dynamicgoogletags=a.dynamicgoogletags||{}};var da=function(a,b){for(var c in a)Object.prototype.hasOwnProperty.call(a,c)&&b.call(void 0,a[c],c,a)},ea=function(a,b){var c=a.length;if(0==c)return 0;for(var d=b||305419896,e=0;e<c;e++)d^=(d<<5)+(d>>2)+a.charCodeAt(e)&4294967295;return 0<d?d:4294967296+d};var ha=function(a,b,c,d){var e=fa;try{if((c?e.qa:Math.random())<(d||e.ia)){var f=e.ha+a+("&"+ga(b,1)),f=f.substring(0,2E3);r.google_image_requests||(r.google_image_requests=[]);var g=r.document.createElement("img");g.src=f;r.google_image_requests.push(g)}}catch(k){}},ga=function(a,b){var c=[];da(a,function(a,e){var f=null,g=typeof a;if(("object"==g&&null!=a||"function"==g)&&2>b)f=ga(a,b+1);else if(0===a||a)f=String(a);f&&c.push(e+"="+encodeURIComponent(f))});return c.join("&")};var ia=String.prototype.trim?function(a){return a.trim()}:function(a){return a.replace(/^[\s\xa0]+|[\s\xa0]+$/g,"")},ja=function(a,b){return a<b?-1:a>b?1:0};var ka=Array.prototype.filter?function(a,b,c){return Array.prototype.filter.call(a,b,c)}:function(a,b,c){for(var d=a.length,e=[],f=0,g="string"==typeof a?a.split(""):a,k=0;k<d;k++)if(k in g){var m=g[k];b.call(c,m,k,a)&&(e[f++]=m)}return e},la=Array.prototype.map?function(a,b,c){return Array.prototype.map.call(a,b,c)}:function(a,b,c){for(var d=a.length,e=Array(d),f="string"==typeof a?a.split(""):a,g=0;g<d;g++)g in f&&(e[g]=b.call(c,f[g],g,a));return e};var w;a:{var ma=r.navigator;if(ma){var na=ma.userAgent;if(na){w=na;break a}}w=""}var x=function(a){return-1!=w.indexOf(a)};var oa=x("Opera")||x("OPR"),y=x("Trident")||x("MSIE"),pa=x("Edge"),qa=x("Gecko")&&!(-1!=w.toLowerCase().indexOf("webkit")&&!x("Edge"))&&!(x("Trident")||x("MSIE"))&&!x("Edge"),ra=-1!=w.toLowerCase().indexOf("webkit")&&!x("Edge"),sa=function(){var a=r.document;return a?a.documentMode:void 0},ta;
+a:{var ua="",va=function(){var a=w;if(qa)return/rv\:([^\);]+)(\)|;)/.exec(a);if(pa)return/Edge\/([\d\.]+)/.exec(a);if(y)return/\b(?:MSIE|rv)[: ]([^\);]+)(\)|;)/.exec(a);if(ra)return/WebKit\/(\S+)/.exec(a);if(oa)return/(?:Version)[ \/]?(\S+)/.exec(a)}();va&&(ua=va?va[1]:"");if(y){var wa=sa();if(null!=wa&&wa>parseFloat(ua)){ta=String(wa);break a}}ta=ua}
+var xa=ta,ya={},za=function(a){if(!ya[a]){for(var b=0,c=ia(String(xa)).split("."),d=ia(String(a)).split("."),e=Math.max(c.length,d.length),f=0;0==b&&f<e;f++){var g=c[f]||"",k=d[f]||"",m=RegExp("(\\d*)(\\D*)","g"),l=RegExp("(\\d*)(\\D*)","g");do{var p=m.exec(g)||["","",""],q=l.exec(k)||["","",""];if(0==p[0].length&&0==q[0].length)break;b=ja(0==p[1].length?0:parseInt(p[1],10),0==q[1].length?0:parseInt(q[1],10))||ja(0==p[2].length,0==q[2].length)||ja(p[2],q[2])}while(0==b)}ya[a]=0<=b}},Aa=r.document,
+Ba=Aa&&y?sa()||("CSS1Compat"==Aa.compatMode?parseInt(xa,10):5):void 0;var Ca;if(!(Ca=!qa&&!y)){var Da;if(Da=y)Da=9<=Number(Ba);Ca=Da}Ca||qa&&za("1.9.1");y&&za("9");var Ea=function(a,b,c,d){this.top=a;this.right=b;this.bottom=c;this.left=d};Ea.prototype.floor=function(){this.top=Math.floor(this.top);this.right=Math.floor(this.right);this.bottom=Math.floor(this.bottom);this.left=Math.floor(this.left);return this};var Fa=window;var fa;fa=new function(){this.ha="http"+("http:"===Fa.location.protocol?"":"s")+"://pagead2.googlesyndication.com/pagead/gen_204?id=";this.ia=.01;this.qa=Math.random()};var z=function(){},B=function(a,b,c){a.f=null;b||(b=[]);a.va=void 0;a.N=-1;a.i=b;a:{if(a.i.length){b=a.i.length-1;var d=a.i[b];if(d&&"object"==typeof d&&"array"!=aa(d)){a.R=b-a.N;a.J=d;break a}}a.R=Number.MAX_VALUE}a.ua={};if(c)for(b=0;b<c.length;b++)d=c[b],d<a.R?(d+=a.N,a.i[d]=a.i[d]||A):a.J[d]=a.J[d]||A},A=[],C=function(a,b){if(b<a.R){var c=b+a.N,d=a.i[c];return d===A?a.i[c]=[]:d}d=a.J[b];return d===A?a.J[b]=[]:d},Ga=function(a,b){var c=C(a,b);return null==c?c:+c},D=function(a,b,c){b<a.R?a.i[b+
+a.N]=c:a.J[b]=c},E=function(a,b,c){a.f||(a.f={});if(!a.f[c]){var d=C(a,c);d&&(a.f[c]=new b(d))}return a.f[c]},F=function(a,b,c){a.f||(a.f={});if(!a.f[c]){for(var d=C(a,c),e=[],f=0;f<d.length;f++)e[f]=new b(d[f]);a.f[c]=e}b=a.f[c];b==A&&(b=a.f[c]=[]);return b},Ha=function(a,b,c){a.f||(a.f={});c=c||[];for(var d=[],e=0;e<c.length;e++)d[e]=c[e].i;a.f[b]=c;D(a,b,d)};z.prototype.toString=function(){return this.i.toString()};
+var G=function(a){return new a.constructor(Ia(a.i))},Ia=function(a){var b;if("array"==aa(a)){for(var c=Array(a.length),d=0;d<a.length;d++)null!=(b=a[d])&&(c[d]="object"==typeof b?Ia(b):b);return c}c={};for(d in a)null!=(b=a[d])&&(c[d]="object"==typeof b?Ia(b):b);return c};var H=function(){this.b={};this.u=[];this.A=null;this.B=[];this.W=.01;this.M=0;this.X=null};H.prototype.j=function(a){for(var b=0;b<this.u.length;b++)if(this.u[b]==a)return this;this.u.push(a);return this};var Ja=function(a,b){a.A=a.A?a.A:b;return a},Ka=function(a,b){for(var c=0;c<b.length;c++)a.G(b[c]);return a};H.prototype.G=function(a){for(var b=0;b<this.B.length;b++)if(this.B[b]==a)return this;this.B.push(a);return this};
+H.prototype.F=function(a,b){if(null!==this.X){var c=ca();this.M+=c-this.X;this.X=null}0<this.M&&(this.b.t=this.M);this.b.c=b;this.b.err=this.u.join();this.b.warn=this.B.join();if(this.A){this.b.excp_n=this.A.name;this.b.excp_m=this.A.message&&this.A.message.substring(0,512);var c=this.b,d;if(d=this.A.stack){var e=this.A.stack;try{-1==e.indexOf("")&&(e="\n"+e);for(var f;e!=f;)f=e,e=e.replace(/((https?:\/..*\/)[^\/:]*:\d+(?:.|\n)*)\2/,"$1");d=e.replace(/\n */g,"\n")}catch(g){d=""}}c.excp_s=d}this.b.w=
+0<window.innerWidth?window.innerWidth:null;this.b.h=0<window.innerHeight?window.innerHeight:null;f=a?"pso_success":"pso_failure";0<this.W&&ha(f,this.b,"jserror"!=f,this.W)};var La=function(){this.document=document};var I=function(a){B(this,a,Ma)};u(I,z);var Ma=[4];I.prototype.v=function(){return G(this)};I.prototype.getId=function(){return C(this,3)};var J=function(a){B(this,a,null)};u(J,z);J.prototype.v=function(){return G(this)};var Na=function(a){B(this,a,null)};u(Na,z);Na.prototype.v=function(){return G(this)};var K=function(a){return E(a,I,1)},L=function(a){B(this,a,Oa)};u(L,z);var Oa=[1];L.prototype.v=function(){return G(this)};L.prototype.l=function(){return F(this,Na,1)};L.prototype.ca=function(a){Ha(this,1,a)};var M=function(a){B(this,a,Pa)};u(M,z);var Pa=[2];M.prototype.v=function(){return G(this)};M.prototype.aa=function(){return C(this,3)};M.prototype.da=function(a){D(this,3,a)};var Qa=function(a){B(this,a,null)};
+u(Qa,z);Qa.prototype.v=function(){return G(this)};var N=function(a){B(this,a,Ra)};u(N,z);var Ra=[1,2,3];N.prototype.v=function(){return G(this)};N.prototype.l=function(){return F(this,Na,2)};N.prototype.ca=function(a){Ha(this,2,a)};var Ta=function(a){B(this,a,Sa)};u(Ta,z);var Sa=[3];h=Ta.prototype;h.v=function(){return G(this)};h.C=function(){return C(this,1)};h.H=function(){return E(this,L,2)};h.P=function(){return C(this,4)};h.aa=function(){return C(this,5)};h.da=function(a){D(this,5,a)};
+h.O=function(){return E(this,P,9)};var P=function(a){B(this,a,null)};u(P,z);P.prototype.v=function(){return G(this)};var Ua=function(a){this.o=a;this.ea=[]};Ua.prototype.g=function(){return 0<F(this.o,N,3).length?F(this.o,N,3)[0]:null};var Ya=function(a,b){var c=b||document,d=null,e=a.getId();if(e)if(d=c.getElementById(e))d=[d];else return[];if(e=C(a,1))if(d){for(var f=[],g=0;g<d.length;++g)d[g].tagName&&d[g].tagName.toUpperCase()==e.toUpperCase()&&f.push(d[g]);d=f}else{d=c.getElementsByTagName(e);e=[];for(f=0;f<d.length;++f)e.push(d[f]);d=e}if((e=C(a,4))&&0<e.length)if(d)for(c=d,d=[],f=0;f<c.length;++f)Va(c[f],e)&&d.push(c[f]);else{if(!c.body)return[];d=Wa(e,c.body)}c=C(a,2);if(t(c)&&d)if(0>c&&(c+=d.length),d.length>c)d=[d[c]];
+else return[];c=C(a,5);if(t(c)&&d){e=[];for(f=0;f<d.length;f++)g=Xa(d[f]),0>c&&(c+=g.length),0<=c&&c<g.length&&e.push(g[c]);d=e}c=C(a,6);if(void 0!==c&&d)switch(c){case 0:return d.slice(1);case 1:return d.slice(0,d.length-1);case 2:return d.slice(1,d.length-1)}return d?d:[]},Za=function(a){return"INS"==a.tagName&&Va(a,["adsbygoogle-placeholder"])},Xa=function(a){var b=[];a=a.getElementsByTagName("p");for(var c=0;c<a.length;++c)100<=$a(a[c])&&b.push(a[c]);return b},ab=function(a,b){if(a==b)return!0;
+if(!a||!b||C(a,1)!=C(b,1)||C(a,2)!=C(b,2)||a.getId()!=b.getId()||C(a,5)!=C(b,5)||C(a,6)!=C(b,6))return!1;var c=C(a,4),d=C(b,4);if(c||d)if(c&&d&&c.length==d.length)for(var e=0;e<c.length;e++){if(c[e]!=d[e])return!1}else return!1;return!0},$a=function(a){if(3==a.nodeType)return a.length;if(1!=a.nodeType||"SCRIPT"==a.tagName)return 0;for(var b=0,c=0;c<a.childNodes.length;++c)b+=$a(a.childNodes[c]);return b},Wa=function(a,b){if(b.getElementsByClassName){for(var c=b.getElementsByClassName(a.join(" ")),
+d=[],e=0;e<c.length;++e)d.push(c[e]);return d}c=[];Va(b,a)&&c.push(b);for(e=0;e<b.childNodes.length;++e)1==b.childNodes[e].nodeType&&(c=c.concat(Wa(a,b.childNodes[e])));return c},Va=function(a,b){for(var c=a.className?a.className.split(/\s+/):[],d={},e=0;e<c.length;++e)d[c[e]]=!0;for(e=0;e<b.length;++e)if(!d[b[e]])return!1;return!0};var cb=function(a,b,c){switch(bb[c]){case 0:b.parentNode&&b.parentNode.insertBefore(a,b);break;case 3:if(c=b.parentNode){var d=b.nextSibling;if(d&&d.parentNode!=c)for(;d&&8==d.nodeType;)d=d.nextSibling;c.insertBefore(a,d)}break;case 1:b.insertBefore(a,b.firstChild);break;case 2:b.appendChild(a)}Za(b)&&(b.style.display="block")},bb={0:0,1:1,2:2,3:3};var db=function(a){a=a.document;return("CSS1Compat"==a.compatMode?a.documentElement:a.body)||{}},eb=function(a){return void 0===a.pageYOffset?(a.document.documentElement||a.document.body.parentNode||a.document.body).scrollTop:a.pageYOffset};var fb=function(a){return!!a.nextSibling||!!a.parentNode&&fb(a.parentNode)},gb=function(a,b){var c=K(b);if(!c)return null;c=Ya(c,a);return 0<c.length?c[0]:null},hb=function(a,b){var c=Q(a,b,!0);return t(c)&&!(c<=db(a).clientHeight)},ib=function(a,b){return a.body?b-a.body.getBoundingClientRect().top:b},Q=function(a,b,c){if(!c||!t(C(b,8))){var d=gb(a.document,b);if(d){var e=E(b,J,2);c=a.document.createElement("div");c.className="googlepublisherpluginad";var f=c.style;f.textAlign="center";f.width="100%";
+f.height="0px";f.clear=e&&C(e,3)?"both":"none";cb(c,d,C(b,3));d=c.getBoundingClientRect().top+eb(a);c.parentNode.removeChild(c);D(b,8,d)}}b=C(b,8);return t(b)?b-eb(a):null},lb=function(a,b,c){switch(b){case 0:return!!jb(a,kb(c));case 3:return!!jb(a,c);case 1:return!1;case 2:return b=c.lastChild,!!jb(a,b?1==b.nodeType?b:kb(b):null);default:return!1}},jb=function(a,b){if(!b)return!1;var c;c=a.getComputedStyle?a.getComputedStyle(b,null):b.currentStyle;if(!c)return!1;c=c.cssFloat||c.styleFloat;return"left"==
+c||"right"==c},mb=function(a){return a.adsbygoogle=a.adsbygoogle||[]},nb=function(a){switch(a){case 0:return"auto";case 1:return"horizontal";case 2:return"vertical";case 3:return"rectangle";default:return"auto"}},kb=function(a){for(a=a.previousSibling;a&&1!=a.nodeType;)a=a.previousSibling;return a?a:null},ob=function(a,b){a.sort(function(a,d){var e=Q(b,a,!0),e=t(e)?e:Number.POSITIVE_INFINITY,f=Q(b,d,!0),f=t(f)?f:Number.POSITIVE_INFINITY;return e-f})};var R=function(a){this.a=a;this.m=[];this.Z=0;this.u=[];this.B=[];this.U=null;this.ba=!1},pb=function(a,b){var c=E(a.g(),I,4);if(!(c&&b&&C(b,1)==C(c,1)&&b.getId()==c.getId()&&t(C(b,2))&&t(C(b,5))))return!1;var c=C(c,4),d=C(b,4);if(c.length!=d.length)return!1;for(var e=0;e<c.length;++e)if(d[e]!=c[e])return!1;return!0},qb=function(a){var b=t(void 0)?void 0:20,c=a.g(),d=c.l(),e=E(c,I,4);if(!(a.ba||0>=b)&&e&&0!=Ya(e,a.a.document).length){a.ba=!0;for(var c=[],f=0;f<d.length;++f){var g=d[f],k=K(g);if(pb(a,
+k)){var m=C(k,2),k=C(k,5);null!=m&&null!=k&&0<=m&&0<=k&&(!c[m]||C(K(c[m]),5)<k)&&(c[m]=g)}}k=0;d=Ya(e,a.a.document);for(m=0;m<c.length&&k<b;++m){var e=k,f=a,l=d[m],g=c[m],k=b-k,p=f.g().l(),q=0;if(l&&g){l=Xa(l).length;switch(C(K(g),6)){case 0:case 1:--l;break;case 2:l-=2}for(var n=C(K(g),5)+1;n<l&&q<k;++n){var O=g.v(),sb=K(O);D(sb,5,n);p.push(O);q++}}q&&f.g().ca(p);k=e+q}}};R.prototype.j=function(a){for(var b=0;b<this.u.length;++b)if(this.u[b]==a)return;this.u.push(a)};
+R.prototype.G=function(a){for(var b=0;b<this.B.length;++b)if(this.B[b]==a)return;this.B.push(a)};
+var rb=function(a,b,c){var d=gb(a.a.document,b);if(d){var e=C(b,3);if(!K(b)||void 0===C(K(b),2)||!lb(a.a,e,d))if(2!=e||c||fb(d))if(c=1==e||2==e?d:d.parentNode,!(c&&0>=c.offsetWidth)||Za(c))a:if(C(b,7))a.G(8);else{b:if(C(b,5))c=C(b,5);else{if(c=S(a).g())if(c=C(c,3),a.Z<c.length){c=c[a.Z++];break b}a.j(4);c=null}if(null!=c){D(b,7,!0);var e=[],f=a.P();f&&e.push(f);for(var f=S(a).ea,g=0;g<f.length;++g)e.push(f[g]);t(C(b,9))&&e.push("pso-lv-"+C(b,9));var k=a.a.document,f=a.C(),g=c,m=C(b,6),l=E(b,J,2),
+p,q,n;l&&(p=C(l,1),q=C(l,2),n=!!C(l,3));var l=k.createElement("div"),O=l.style;O.textAlign="center";O.width="100%";O.height="auto";O.clear=n?"both":"none";n=k.createElement("ins");k=n.style;k.display="block";k.margin="auto";k.backgroundColor="transparent";p&&(k.marginTop=p);q&&(k.marginBottom=q);l.appendChild(n);l.className="googlepublisherpluginad";n.className="adsbygoogle";n.setAttribute("data-ad-client",f);g&&n.setAttribute("data-ad-slot",g);n.setAttribute("data-ad-format",nb(m));e.length&&n.setAttribute("data-ad-channel",
+e.join("+"));n.setAttribute("data-tag-origin","pso");cb(l,d,C(b,3));try{mb(a.a).push({})}catch(sb){C(b,5)!=c&&a.Z--;D(b,7,!1);a.G(6);l.parentNode&&l.parentNode.removeChild(l);break a}a.m.push(l)}}}},tb=function(a,b){for(var c=Number.POSITIVE_INFINITY,d=0;d<a.m.length;++d)var e=a.m[d].getBoundingClientRect().top,f=a.m[d].getBoundingClientRect().bottom,c=Math.min(c,b<e?e-b:f<b?b-f:0);return c},S=function(a){a=v(a.a).ps||null;if(!a)throw Error("No placementState");return a},ub=function(a,b){var c=S(a).o;
+if(!c||!c.C())return a.j(5),!1;c=F(c,N,3)[0];return c?C(c,3).length<b?(a.j(4),a.j(5),!1):!0:(a.j(5),!1)};R.prototype.C=function(){return S(this).o.C()||""};R.prototype.P=function(){return S(this).o.P()||void 0};R.prototype.H=function(){return S(this).o.H()||new L};R.prototype.g=function(){var a=S(this).g();if(!a)throw Error("No mConfig");return a};var vb=function(a){a=C(a.g(),6);return null!=a&&0<a};var wb=function(){this.K=this.L=this.Y=null};var xb=function(){H.call(this)};u(xb,H);
+xb.prototype.F=function(a,b){var c=this.b,d;a:{d=(new La).document.getElementsByTagName("script");for(var e=0;e<d.length;++e)if(d[e].hasAttribute("data-pso-version")){d=d[e].getAttribute("data-pso-version");break a}d=null}c.sv=d;if(d=v(window).ps||null)c=d.o,d=d.g(),e=a?Ga(c,10):Ga(c,7),null!=e&&(this.W=e),e=this.b.wpc,this.b.wpc=null!=e?e:c.C(),this.b.su=C(c,14),this.b.tn=c.P(),this.b.ev=d&&C(d,5);if(c=v(window).ss||null)this.b.s=c.L,this.b.st=c.Y;xb.ra.F.call(this,a,b)};var T=function(a){return v(a).ls=v(a).ls||new xb};var U=function(a){R.call(this,a)};u(U,R);U.prototype.apply=function(a){var b;(b=S(this).o)&&b.C()&&b.H()?b=!0:(this.j(5),b=!1);if(b){b=this.H().l();for(var c=0;c<b.length;c++){var d=b[c];C(d,7)||rb(this,d,a)}}};U.prototype.D=function(){return(0==this.H().l().length||0<this.m.length)&&0==this.u.length};var yb=function(a){R.call(this,a);if(ub(this,0)){a=this.H().l();for(var b=this.g().l(),c=0;c<a.length;c++){var d=a[c],e;a:{e=d;var f=b;if(e&&K(e))for(var g=0;g<f.length;g++){var k=f[g];if(C(e,3)==C(k,3)&&ab(K(e),K(k))){e=k;break a}}e=null}e&&E(e,J,2)&&(e=E(e,J,2),d.f||(d.f={}),f=e?e.i:e,d.f[2]=e,D(d,2,f))}}};u(yb,U);var zb=function(a,b){var c=void 0===b.pageXOffset?(b.document.documentElement||b.document.body.parentNode||b.document.body).scrollLeft:b.pageXOffset,d=eb(b);if(a.getBoundingClientRect){var e=a.getBoundingClientRect();return new Ea(e.top+d,e.right+c,e.bottom+d,e.left+c)}e=b.document.createRange();e.selectNodeContents(a);if(e.collapsed)return new Ea(0,0,0,0);e=e.getBoundingClientRect();return new Ea(e.top+d,e.right+c,e.bottom+d,e.left+c)};var Ab={"120x90":!0,"160x90":!0,"180x90":!0,"200x90":!0,"468x15":!0,"728x15":!0};var Bb=function(a,b){var c=a.id;return!!c&&!!c.indexOf&&"function"===typeof c.indexOf&&0===c.indexOf(b)};var Cb=function(a){var b=a.googletag;if(!b||"function"!=typeof b.pubads)return V("div[id^=div-gpt-ad]",a);var c=[];try{for(var d=b.pubads().getSlots(),b=0;b<d.length;b++){var e=d[b].getSlotElementId(),f=a.document.getElementById(e);null!=f&&c.push(f)}}catch(g){ha("ladd_evt",{ok:0,err:g.toString()},!0,.1)}return c},Db=function(a){var b=V("iframe[id^=aswift_],iframe[id^=google_ads_frame]",a);return ka(b,function(c){if("IFRAME"!=c.tagName&&"INS"!=c.tagName||!Bb(c,"google_ads_frame")&&!Bb(c,"aswift_"))c=
+!1;else{c=zb(c,a);var b=c.bottom-c.top;c=!(Ab[c.right-c.left+"x"+b]&&50>b)}return c})},Eb=function(a){return V("iframe[id^=aswift_],iframe[id^=google_ads_frame]",a)},V=function(a,b){return la(b.document.querySelectorAll(a),function(a){return a})},Hb=function(a){this.sa=a;this.ma=Cb(a);this.ga=V("ins.adsbygoogle",a);this.fa=Eb(a);this.oa=Db(a);this.pa=V("[__lsu_res=reserved]",a);this.S=[];a=Fb(this);for(var b=0;b<a.length;b++)this.S.push(new Gb(a[b]))},Fb=function(a){return[].concat(a.ma,a.ga,a.fa,
+a.pa)},Gb=function(a){this.ka=a;this.$=null};var W=function(a){R.call(this,a)};u(W,R);W.prototype.apply=function(){};W.prototype.D=function(){var a;if(vb(this)){var b=this.a;a=Cb(b);var c=V("ins.adsbygoogle",b),d=Eb(b),b=V("[__lsu_res=reserved]",b);a=0<[].concat(a,c,d,b).length}else a=!0;return a};var Ib=function(a){R.call(this,a);this.I=null};u(Ib,R);
+Ib.prototype.apply=function(a){if(a&&ub(this,2)){qb(this);a=db(this.a).clientHeight||640;null==this.I&&(this.I=new Hb(this.a));var b=this.I.oa.length;if(!(5<=b)){var b=Math.min(2,5-b),c=this.g().l();ob(c,this.a);for(var d=0;d<c.length&&this.m.length<b;++d){var e=c[d];if(hb(this.a,e)){var f=Q(this.a,e,!0);if(void 0!==f){var g;a:{g=this.I;for(var k=a,m=f,l=0;l<g.S.length;l++){var p=m,q=k,n;n=g.S[l];n.$=zb(n.ka,g.sa);n=n.$;if(n.top-q<p&&p<n.bottom+q){g=!0;break a}}g=!1}g||tb(this,f)<a||rb(this,e,!0)}}}0==
+this.m.length&&this.G(1)}}};Ib.prototype.D=function(){return vb(this)?0<Fb(this.I).length:!0};var Jb=function(a){R.call(this,a);this.V=!1};u(Jb,W);
+Jb.prototype.apply=function(a){if(a&&!this.V){var b;a:{var c=this.a.document;b=c.body;if(a&&b){a=this.C();var d=c.createElement("div");d.className="googlepublisherpluginad";d.style.display="block";c=c.createElement("ins");c.className="adsbygoogle";c.setAttribute("data-ad-client",a);c.setAttribute("data-reactive-ad-format","1");c.setAttribute("data-tag-origin","pso");c.style.display="none";d.appendChild(c);cb(d,b,2);try{mb(this.a).push({})}catch(e){this.G(6);d.parentNode&&d.parentNode.removeChild(d);
+b=5;break a}this.m.push(d);b=0}else b=4}this.V=0==b}};Jb.prototype.D=function(){return this.V&&W.prototype.D.call(this)};var Kb=function(a){R.call(this,a);a=db(a).clientHeight;this.ja=.1*a;this.na=.75*a};u(Kb,R);
+Kb.prototype.apply=function(a){if(ub(this,3)&&!this.D()){qb(this);var b=this.g().l();ob(b,this.a);var c;c=this.ja;var d;d=document;d=d.querySelectorAll?d.querySelectorAll("header,#header,#masthead,.header,.site-header"):[];for(var e=d.length,f=0<e?d[0]:null,g=1;g<e;g++)d[g].getBoundingClientRect().top<f.getBoundingClientRect().top&&(f=d[g]);(d=f)&&(d=d.getBoundingClientRect())&&d.top!=d.bottom&&d.left!=d.right&&(c=Math.min(c,ib(document,d.bottom)));for(d=0;d<b.length&&3>this.m.length;d++){e=b[d];
+var f=c,g=this.a.document,k=Q(this.a,e,!1);!t(k)||ib(g,k)<f?f=!1:(f=tb(this,k),f=this.na<f);f&&(f=hb(this.a,e),g=C(e,6)||0,f&&0==g&&D(e,6,3),!f&&a||rb(this,e,a))}}};Kb.prototype.D=function(){return 3==this.m.length};var X={};X[16]=U;X[17]=U;X[19]=W;X[29]=Ib;X[33]=W;X[30]=Jb;X[28]=Kb;X[34]=Kb;X[32]=yb;X[1]=U;X[8]=W;X[11]=U;var Lb=[19,29,33,30,16,32,17,34],Mb=[16,19,33,30,17,1,6,8,11];var Nb=function(a,b){for(var c=a.google_ad_modifications=a.google_ad_modifications||{},c=c.loeids=c.loeids||[],d=0;d<b.length;d++)c.push(b[d])};var Ob=function(a,b){var c=a.google_ad_modifications=a.google_ad_modifications||{};(c.ad_channels=c.ad_channels||[]).push(b)},Rb=function(a){a+=Pb;var b=ea(a);return((b%512*2+1)*Qb+ea(a,b)%1024)%1024},Sb=function(a,b,c){var d=a.length;c-=0;return 0>c||c>=b*d?null:a[c%d]};var Tb=function(a){return 0>a||99<a?null:10>a?"0"+a:""+a};var Ub=function(a,b,c){this.T=a;this.la=c?c:new P};Ub.prototype.O=function(){return this.la||new P};var Vb=function(a){if(!t(a))return!1;for(var b=0;b<Lb.length;++b)if(a==Lb[b])return!1;return!0},$b=function(){var a=Y,b=Wb,c=Xb,d=b.g();if(!d)return Yb(16);var e=null,f;a:{f=F(d,M,1);for(var g=0;g<f.length;++g){for(var k=!0,m=0;m<Mb.length;++m)C(f[g],4)==Mb[m]&&(k=!1);if(k){f=[];0==d.l().length&&f.push("PsoInvalidVariant");0==C(d,3).length&&f.push("PsoNoAdSlotCodes");break a}}f=[]}if(0==f.length)a:{e=F(d,M,1);f=c.T;if(t(f))for(g=0;g<e.length;g++)if(k=e[g],X[C(k,4)])for(var m=F(k,Qa,2),l=0;l<m.length;l++){var p=
+m[l],q=C(p,1),p=C(p,2);if(t(q)&&t(p)&&f>=q&&f<=p){e=k;break a}}e=null}else for(g=0;g<f.length;++g)b.ea.push(f[g]);if(!e){f=F(d,M,1);e={};for(g=0;g<f.length;g++)e[C(f[g],4)]=!0;f=null;e[19]||e[8]?f=19:e[16]||e[1]?f=16:0<d.l().length&&0<C(d,3).length&&e[34]&&(f=34);null!=f?(e=new M,D(e,6,3),D(e,4,f),16!=f&&19!=f&&e.da("pso-ama-fallback")):e=null}if(!e)return Yb(16);(f=e.aa())&&Ob(a,f);f=!0;C(c.O(),2)&&(Date.now?Date.now():+new Date)<C(c.O(),2)||(Ob(a,"pso-ama-exd"),f=!1);C(b.o,11)&&(Ob(a,"pso-ama-stl-tmp"),
+f=!1);f&&Ob(a,"pso-ama-elig");2==C(e,6)&&(b=C(e,1),null!=b&&Nb(a,[""+b]));if(f&&(2==C(e,6)||1==C(e,6))){d=F(d,M,1);if(null===c.T)c=[];else{b={};c=[];for(f=0;f<d.length;f++)g=Zb(d[f]),null==g||b[g]||(b[g]=!0,c.push(g));b=Zb(e);if(null!=b){d=[];b=Tb(b);f=!1;if(b)for(g=0;g<c.length;g++)k=Tb(c[g]),b==k&&(f=!0),k&&d.push("950"+b+k);f||(d=[]);c=d}else c=[]}Nb(a,c)}a=new wb;a.Y=C(e,5);a.L=C(e,4);return a},Yb=function(a){var b=new wb;b.L=a;return b},ac=function(a){a=a.google_ad_modifications=a.google_ad_modifications||
+{};a.remove_ads_by_default=!0;a.ad_whitelist=[{ad_tag_origin:"pso"}];a.ad_blacklist=[];a.space_collapsing="slot"},Zb=function(a){var b;switch(C(a,6)){case 1:b=C(a,4);break;case 2:b=C(a,7)}return null!=b?b:null};var bc=null,cc=!1,fc=function(a){var b=dc,c=ec;b.addEventListener?(a&&b.addEventListener("DOMContentLoaded",a,!1),c&&b.addEventListener("load",c,!1)):b.attachEvent&&c&&b.attachEvent("onload",c)},hc=function(a){t(bc)&&a.clearInterval&&(a.clearInterval(bc),bc=null);cc||gc(a,!1);gc(a,!0)},ic=function(a){try{hc(a);var b=v(a).ss||null;if(b&&b.K){var c=b.K,d=c.D(),e=c.u,f=c.B,g=c.U,k=c.m.length;d||0!=k||e.push(6);if(d&&0==e.length&&null===g)Ka(T(a),f).F(!0,k);else{for(var m=Ka(T(a),f),b=0;b<e.length;b++)m.j(e[b]);
+Ja(m,g).F(!1,k)}}else T(a).j(2).F(!1,0)}catch(l){Ja(T(a).j(1),l).F(!1,null)}v(a).loaded=!0},gc=function(a,b){b||(cc=!0);var c=v(a).ss||null;if(c&&c.K){c=c.K;try{c.apply(b)}catch(d){c.j(1),null===c.U&&(c.U=d)}}},jc=function(){gc(window,!1)};var Y=window;
+try{var kc,lc=v(Y).config;kc=lc?new Ta(lc):null;if(!kc)throw Error("No config");var Wb=new Ua(kc),mc=Wb;v(Y).ps=mc;var Z,Xb;if(x("iPad")||x("Android")&&!x("Mobile")||x("Silk")||!(x("iPod")||x("iPhone")||x("Android")||x("IEMobile")))Z=Yb(16);else{var nc,oc=/^#([^=]*)=(\d+)$/.exec(Y.location.hash);if((nc=oc&&3==oc.length&&"pso_strategy"==oc[1]?+oc[2]:null)&&X[nc]){Z=Yb(nc);var pc=Y;Vb(nc)&&ac(pc)}else{var qc=Y,rc=Wb.o.O(),sc;try{var tc=parseInt(qc.localStorage.getItem("PSO_EXP0"),10);sc=isNaN(tc)?null:
+tc}catch(a){sc=null}if(null==sc){var uc=sc=Math.floor(1024*Math.random());try{qc.localStorage.setItem("PSO_EXP0",uc.toString())}catch(a){}}Xb=new Ub(sc,0,rc);Z=$b()}if(1==Z.Y){var vc=Y;Vb(Z.L)&&ac(vc)}}if(!Z)throw Error("No strategyState created!");var wc=Z;v(Y).ss=wc;var xc=Y,yc=Z,zc=yc.L;if(t(zc)){var Ac=X[zc];zc&&Ac&&(yc.K=new Ac(xc))}if(Xb){var Bc=Y,Qb=Xb.T,Pb=Y.location.hostname,Cc=[],Dc=Sb(["17415655","17415656"],1,Rb("unif1"));null===Dc||Cc.push(Dc);var Ec=Sb(["17415657","17415658"],10,Rb("unif2"));
+null===Ec||Cc.push(Ec);var Fc=Sb(["17415659","17415660"],100,Rb("unif3"));null===Fc||Cc.push(""+Fc);0<Cc.length&&Nb(Bc,Cc)}var dc=Y,ec=ba(ic,dc),Gc=ba(hc,dc);switch(dc.document.readyState){case "complete":ec();break;case "interactive":Gc();fc();break;default:var Hc=dc,Ic=mb(Hc);Ic.loaded||(Ic.onload=jc);bc=Hc.setInterval(jc,10);fc(Gc)}}catch(a){Ja(T(Y),a).F(!1,null)};})();
+</script>
+
+</head><body class="single single-post postid-994 single-format-standard jsj_code_highlight jsj_code_highlight-github jsj_code_highlight-source_code_pro jsj_code_highlight-include_additional_styles jsj_code_highlight-add_line_numbers jsj_code_highlight-no-tab_replacement content-right" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+<div id="page" class="hfeed site">
+	<header id="masthead" class="site-header cl sticky" role="banner" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+		<div class="container">
+
+			<div class="site-branding">
+				
+		<a class="site-logo" href="http://4dev.tech/" rel="home"><img src="./CreatingLiveAuctionApp_files/novoLogo.png" alt="4Dev Web Development Tutorials"></a>
+
+				</div><!-- .site-brading -->
+
+
+			<nav id="site-navigation" class="main-navigation" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+				<button class="menu-toggle"><i class="dashicons dashicons-menu"></i></button>
+				<ul class="menuMainHeader">
+					<!--
+					<li>
+						<a class="linkContact" target="_blank" href="https://twitter.com/leonardo_jines">
+							<img class="imageContact" src="http://4dev.tech/wp-content/themes/wr-elite/assets/img/twitter.png" wid/>
+							Follow
+						</a>
+					</li>
+					-->
+					<li>
+						<a class="linkContact" href="http://4dev.tech/contact-page/">
+							<img class="imageContact" src="./CreatingLiveAuctionApp_files/dialogIcon.png">
+							Contact Us
+						</a>
+					</li>
+				</ul>
+			</nav><!-- #site-navigation -->
+		</div>
+		<div class="subHeader">
+			<div class="container">
+				<nav>
+					<ul class="menuSubHeader">
+						<li><a href="http://4dev.tech/">Home</a></li>
+						<li><a href="http://4dev.tech/category/java">Java</a></li>
+						<li><a href="http://4dev.tech/category/javascript">Javascript</a></li>
+						<li><a href="http://4dev.tech/category/angularjs">AngularJS</a></li>
+						<li><a href="http://4dev.tech/category/react">React.js</a></li>
+						<li><a href="http://4dev.tech/category/node-js">Node.js</a></li>
+						<li><a href="http://4dev.tech/category/android">Android</a></li>
+					</ul>
+				</nav>
+				<div class="buscaSubHeader">
+					<form action="http://4dev.tech/" method="get" role="search" class="has-feedback search-header-form">
+						<input type="search" title="Search for:" name="s" value="" placeholder="Search ..." class="search-field-header form-control">
+						<button class="search-submit-header" type="submit"><i class="icon-search form-control-feedback"></i></button>
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</header><!-- #masthead -->
+
+	<div id="content" class="site-content">
+		<!--
+<div class="page-title" style="background-image: url(http://4dev.tech/wp-content/themes/wr-elite/assets/img/pattern.png);;background-repeat: no-repeat;;background-position: left;;background-attachment: scroll;">
+	
+</div>
+-->
+
+
+			<div class="container">
+
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main" itemprop="mainContentOfPage" itemscope="itemscope" itemtype="http://schema.org/Blog">
+
+		
+<article id="post-994" class="post-994 post type-post status-publish format-standard has-post-thumbnail hentry category-angular-2 category-angularjs category-node-js tag-angular-2 tag-angularjs tag-node-js tag-real-time-applications tag-socket-io tag-websocket" itemscope="itemscope" itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
+		<!--
+	<div class="entry-thumb">
+		<i class="icon-edit"></i>		<a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/"><img width="154" height="96" src="http://4dev.tech/wp-content/uploads/2016/02/auction-app.png" class="attachment-post-thumbnail wp-post-image" alt="auction-app" /></a>	
+	</div> .entry-thumb -->
+
+	<div class="entry-content" itemprop="text">	
+		<div class="posted-on"><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/" rel="bookmark"><time class="entry-date published" datetime="2016-02-21T14:18:04+00:00"><span class="m">Feb</span><span class="d">21</span><span class="y">2016</span></time></a></div>
+		<div class="posted-entry">
+
+			<h2 class="entry-title" itemprop="headline">
+				<a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/" rel="bookmark">Creating a Live Auction App with Angular 2, Node.js and Socket.IO</a>			</h2><!-- entry-title -->
+
+			<div class="entry-meta">
+				<span class="byline"> <i class="icon-user"></i><span class="author vcard"><a class="url fn n" href="http://4dev.tech/author/leonardojines/">Leonardo Jines</a></span></span><span class="cat-links"><i class="icon-category"></i><a href="http://4dev.tech/category/angularjs/angular-2/" rel="category tag">Angular 2</a>, <a href="http://4dev.tech/category/angularjs/" rel="category tag">AngularJS</a>, <a href="http://4dev.tech/category/node-js/" rel="category tag">Node.js</a></span><span class="comments-link"><i class="icon-comments"></i><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comments">19 Comments</a></span>			</div><!-- .entry-meta -->
+
+			<figure id="attachment_1023" style="width: 850px;" class="wp-caption aligncenter"><a href="./CreatingLiveAuctionApp_files/animation2.gif"><img src="./CreatingLiveAuctionApp_files/animation2.gif" alt="Angular 2 Auction App" width="850" height="377" class="size-full wp-image-1023"></a><figcaption class="wp-caption-text">Angular 2 Auction App</figcaption></figure>
+<div class="googlepublisherpluginad" style="text-align: center; width: 100%; height: auto; clear: none;"><ins class="adsbygoogle" data-ad-client="ca-pub-2385181970702192" data-ad-slot="3824194060" data-ad-format="horizontal" data-ad-channel="WordPressSinglePost+pso-lv-11" data-tag-origin="pso" data-adsbygoogle-status="done" style="display: block; margin: 10px auto 20px; height: 90px; background-color: transparent;"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:855px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:855px;background-color:transparent"><iframe width="855" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" src="./CreatingLiveAuctionApp_files/saved_resource.html"></iframe></ins></ins></ins></div><p>In this tutorial we’re going to build a very cool Live Auction Application, my goal is to demonstrate how Angular 2, Node.js and Socket.io work together, and as everyone knows Angular 2 will soon come out so I thought it would be great to write a tutorial involving it. Of course our app won’t have all the features a real auction app has, this is just an example to demonstrate how to integrate the frameworks I mentioned.</p>
+<h4 class="subtitle"><strong>Setting up the Environment</strong></h4>
+<p>The first step is to configure the environment, let’s get started by creating our Node.js project, I’m going to use express to do it, if you don’t have it open your terminal and run the command <code>npm install express-generator -g</code> to install, then you can create the project with the command <code>expess {project name}</code> (replace <code>{project name}</code> with your actual project name).</p>
+<p>Now you have the basic project structure created for you, but we need to make some changes in order add Angular 2 and Socket.io to the project, first open your <code>package.json</code> and paste the following code:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java jsj_code_highlight" style="font-family:monospace;"><span style="color: #009900;">{</span>
+  <span style="color: #0000ff;">"name"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"auction"</span>,
+  <span style="color: #0000ff;">"version"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"0.0.0"</span>,
+  <span style="color: #0000ff;">"private"</span><span style="color: #339933;">:</span> <span style="color: #000066; font-weight: bold;">true</span>,
+  <span style="color: #0000ff;">"scripts"</span><span style="color: #339933;">:</span> <span style="color: #009900;">{</span>
+    <span style="color: #0000ff;">"postinstall"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"npm run typings install"</span>,
+    <span style="color: #0000ff;">"tsc"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"tsc"</span>,
+    <span style="color: #0000ff;">"tsc:w"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"tsc -w"</span>,
+    <span style="color: #0000ff;">"start"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"concurrent <span style="color: #000099; font-weight: bold;">\"</span>node ./bin/www<span style="color: #000099; font-weight: bold;">\"</span> <span style="color: #000099; font-weight: bold;">\"</span>npm run tsc:w<span style="color: #000099; font-weight: bold;">\"</span>"</span>,
+    <span style="color: #0000ff;">"typings"</span> <span style="color: #339933;">:</span> <span style="color: #0000ff;">"typings"</span>
+  <span style="color: #009900;">}</span>,
+   <span style="color: #0000ff;">"license"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"ISC"</span>,
+  <span style="color: #0000ff;">"dependencies"</span><span style="color: #339933;">:</span> <span style="color: #009900;">{</span>
+    <span style="color: #0000ff;">"body-parser"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"~1.13.2"</span>,
+    <span style="color: #0000ff;">"cookie-parser"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"~1.3.5"</span>,
+    <span style="color: #0000ff;">"debug"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"~2.2.0"</span>,
+    <span style="color: #0000ff;">"express"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"~4.13.1"</span>,
+    <span style="color: #0000ff;">"jade"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"~1.11.0"</span>,
+    <span style="color: #0000ff;">"morgan"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"~1.6.1"</span>,
+    <span style="color: #0000ff;">"serve-favicon"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"~2.3.0"</span>,
+    <span style="color: #0000ff;">"angular2"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"2.0.0-beta.6"</span>,
+    <span style="color: #0000ff;">"systemjs"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"0.19.20"</span>,
+    <span style="color: #0000ff;">"es6-promise"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"^3.0.2"</span>,
+    <span style="color: #0000ff;">"es6-shim"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"^0.33.3"</span>,
+    <span style="color: #0000ff;">"reflect-metadata"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"0.1.2"</span>,
+    <span style="color: #0000ff;">"rxjs"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"5.0.0-beta.0"</span>,
+    <span style="color: #0000ff;">"zone.js"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"0.5.14"</span>,
+    <span style="color: #0000ff;">"socket.io"</span><span style="color: #339933;">:</span><span style="color: #0000ff;">"1.4.5"</span>
+  <span style="color: #009900;">}</span>,
+  <span style="color: #0000ff;">"devDependencies"</span><span style="color: #339933;">:</span> <span style="color: #009900;">{</span>
+    <span style="color: #0000ff;">"concurrently"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"^1.0.0"</span>,
+    <span style="color: #0000ff;">"lite-server"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"^2.0.1"</span>,
+    <span style="color: #0000ff;">"typescript"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"^1.7.5"</span>,
+    <span style="color: #0000ff;">"typings"</span><span style="color: #339933;">:</span><span style="color: #0000ff;">"^0.6.8"</span>
+  <span style="color: #009900;">}</span>
+<span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>Now create another file called <code>tsconfig.json</code> in the project root folder and put the following into the file:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java jsj_code_highlight" style="font-family:monospace;"><span style="color: #009900;">{</span>
+  <span style="color: #0000ff;">"compilerOptions"</span><span style="color: #339933;">:</span> <span style="color: #009900;">{</span>
+    <span style="color: #0000ff;">"target"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"es5"</span>,
+    <span style="color: #0000ff;">"module"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"system"</span>,
+    <span style="color: #0000ff;">"moduleResolution"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"node"</span>,
+    <span style="color: #0000ff;">"sourceMap"</span><span style="color: #339933;">:</span> <span style="color: #000066; font-weight: bold;">true</span>,
+    <span style="color: #0000ff;">"emitDecoratorMetadata"</span><span style="color: #339933;">:</span> <span style="color: #000066; font-weight: bold;">true</span>,
+    <span style="color: #0000ff;">"experimentalDecorators"</span><span style="color: #339933;">:</span> <span style="color: #000066; font-weight: bold;">true</span>,
+    <span style="color: #0000ff;">"removeComments"</span><span style="color: #339933;">:</span> <span style="color: #000066; font-weight: bold;">false</span>,
+    <span style="color: #0000ff;">"noImplicitAny"</span><span style="color: #339933;">:</span> <span style="color: #000066; font-weight: bold;">false</span>
+  <span style="color: #009900;">}</span>,
+  <span style="color: #0000ff;">"exclude"</span><span style="color: #339933;">:</span> <span style="color: #009900;">[</span>
+    <span style="color: #0000ff;">"node_modules"</span>,
+    <span style="color: #0000ff;">"typings/main"</span>,
+    <span style="color: #0000ff;">"typings/main.d.ts"</span>
+  <span style="color: #009900;">]</span>
+<span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>Also in the root folder create the <code>typings.json</code> and copy/paste the following code into it:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java jsj_code_highlight" style="font-family:monospace;"><span style="color: #009900;">{</span>
+  <span style="color: #0000ff;">"ambientDependencies"</span><span style="color: #339933;">:</span> <span style="color: #009900;">{</span>
+    <span style="color: #0000ff;">"es6-shim"</span><span style="color: #339933;">:</span> <span style="color: #0000ff;">"github:DefinitelyTyped/DefinitelyTyped/es6-shim
+/es6-shim.d.ts#6697d6f7dadbf5773cb40ecda35a76027e0783b2"</span>
+  <span style="color: #009900;">}</span>
+<span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>Ok, we have now created all the configuration files, but before we continue you have to install the dependencies by running the command <code>npm install</code> on the terminal.</p>
+<p>If you open your <code>app.js</code> you’ll see that express has already put some code in there, in order to make it as simple as possible let’s delete the code we don’t need, after the modification your <code>app.js</code> should look like this:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;"><span style="color: #000066; font-weight: bold;">var</span> express <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'express'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> path <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'path'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> favicon <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'serve-favicon'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> logger <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'morgan'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> cookieParser <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'cookie-parser'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> bodyParser <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'body-parser'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> routes <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'./routes/index'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> app <span style="color: #339933;">=</span> express<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span>logger<span style="color: #009900;">(</span><span style="color: #3366CC;">'dev'</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span>bodyParser.<span style="color: #660066;">json</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span>bodyParser.<span style="color: #660066;">urlencoded</span><span style="color: #009900;">(</span><span style="color: #009900;">{</span> extended<span style="color: #339933;">:</span> <span style="color: #003366; font-weight: bold;">false</span> <span style="color: #009900;">}</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span>cookieParser<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span>express.<span style="color: #000066; font-weight: bold;">static</span><span style="color: #009900;">(</span>path.<span style="color: #660066;">join</span><span style="color: #009900;">(</span>__dirname<span style="color: #339933;">,</span> <span style="color: #3366CC;">'public'</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'/'</span><span style="color: #339933;">,</span> routes<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// catch 404 and forward to error handler</span>
+app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">(</span>req<span style="color: #339933;">,</span> res<span style="color: #339933;">,</span> next<span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+  <span style="color: #000066; font-weight: bold;">var</span> err <span style="color: #339933;">=</span> <span style="color: #000066; font-weight: bold;">new</span> Error<span style="color: #009900;">(</span><span style="color: #3366CC;">'Not Found'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+  err.<span style="color: #660066;">status</span> <span style="color: #339933;">=</span> <span style="color: #CC0000;">404</span><span style="color: #339933;">;</span>
+  next<span style="color: #009900;">(</span>err<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">}</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+module.<span style="color: #660066;">exports</span> <span style="color: #339933;">=</span> app<span style="color: #339933;">;</span></pre></td></tr></tbody></table></div>
+
+<p>By default express sets jade as the view engine, we’ve already deleted the lines responsible for that in the <code>app.js</code>, but if you check the folder <code>/views</code> you’ll see some <code>.jade</code> files, you can delete them if you want, later we’re going to place our Angular 2 HTML pages in this folder, but for now you can just create and leave an empty <code>index.html</code> in there.</p>
+<p>After getting rid of the <code>.jade</code> files we have to tell Node.js that we want to use our <code>index.html</code> instead, we can do that by changing a little bit the code in the <code>routes/index.js</code> file, just open the file and replace its content with the following code:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;"><span style="color: #000066; font-weight: bold;">var</span> express <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'express'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> router <span style="color: #339933;">=</span> express.<span style="color: #660066;">Router</span><span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> path <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'path'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">/* GET home page. */</span>
+router.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'/'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">(</span>req<span style="color: #339933;">,</span> res<span style="color: #339933;">,</span> next<span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+  res.<span style="color: #660066;">sendFile</span><span style="color: #009900;">(</span>path.<span style="color: #660066;">join</span><span style="color: #009900;">(</span>__dirname<span style="color: #339933;">,</span> <span style="color: #3366CC;">'../'</span><span style="color: #339933;">,</span> <span style="color: #3366CC;">'views'</span><span style="color: #339933;">,</span> <span style="color: #3366CC;">'index.html'</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">}</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+module.<span style="color: #660066;">exports</span> <span style="color: #339933;">=</span> router<span style="color: #339933;">;</span></pre></td></tr></tbody></table></div>
+
+<p>To make sure it’s working run your project with the command <code>npm start</code> then enter the url <code>http://localhost:3000/</code> in your browser, it should display an empty page, write something in the <code>index.html</code> you created and refresh the page, if it appears on the browser you’ve done everything right! Now we’re ready to actually start writing some code.</p>
+<h4 class="subtitle"><strong>Introducing Socket.IO</strong></h4>
+<p>As we know, an auction app must be real-time, which means that when a user places a bid all the other connected users must instantly see it, that’s where Socket.IO comes in, it allows Node.js to receive and broadcast events to all connected clients, so when a user places a bid Socket.IO will emit an event to the server which will update the product price and broadcast it to the other users.</p>
+<p>Now let’s see how that looks like in code, copy the following code and paste bellow the <code>var app = express();</code> in your <code>app.js</code>:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;"><span style="color: #000066; font-weight: bold;">var</span> http <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'http'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> server <span style="color: #339933;">=</span> http.<span style="color: #660066;">createServer</span><span style="color: #009900;">(</span>app<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #000066; font-weight: bold;">var</span> io <span style="color: #339933;">=</span> require<span style="color: #009900;">(</span><span style="color: #3366CC;">'socket.io'</span><span style="color: #009900;">)</span>.<span style="color: #660066;">listen</span><span style="color: #009900;">(</span>server<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+server.<span style="color: #660066;">listen</span><span style="color: #009900;">(</span><span style="color: #CC0000;">8000</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+io.<span style="color: #000066; font-weight: bold;">set</span><span style="color: #009900;">(</span><span style="color: #3366CC;">"origins"</span><span style="color: #339933;">,</span> <span style="color: #3366CC;">"*:*"</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #000066; font-weight: bold;">var</span> currentPrice <span style="color: #339933;">=</span> <span style="color: #CC0000;">99</span><span style="color: #339933;">;</span>
+&nbsp;
+io.<span style="color: #660066;">on</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'connection'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span> <span style="color: #009900;">(</span>socket<span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+	socket.<span style="color: #660066;">emit</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'priceUpdate'</span><span style="color: #339933;">,</span>currentPrice<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+	socket.<span style="color: #660066;">on</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'bid'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span> <span style="color: #009900;">(</span>data<span style="color: #009900;">)</span> <span style="color: #009900;">{</span>
+		currentPrice <span style="color: #339933;">=</span> parseInt<span style="color: #009900;">(</span>data<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+		socket.<span style="color: #660066;">emit</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'priceUpdate'</span><span style="color: #339933;">,</span>currentPrice<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+		socket.<span style="color: #660066;">broadcast</span>.<span style="color: #660066;">emit</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'priceUpdate'</span><span style="color: #339933;">,</span>currentPrice<span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+	<span style="color: #009900;">}</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">}</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span></pre></td></tr></tbody></table></div>
+
+<p>In the first 5 lines I’m just creating the server that Socket.IO will use to send/receive events, then I’m creating a listener to the <code>connection</code> event which will be emitted every time a user connects (we’ll get to that in a moment), you can use the function <code>io.on(event, callback)</code> to create a listener to any event you want, you just need to pass the event as the fist argument and the callback function as the second, when it receives the event the callback will be executed. </p>
+<p>In this case when a user connects I’m immediately emitting the event <code>priceUpdate</code> passing the current price, that’s because at this moment the client-side doesn’t have the current price yet, so that’s the first thing we want to send. After that we have to create a listener to the <code>bid</code> event that will update the price and broadcast to the other users. Note that I’m calling <code>socket.emit()</code> and <code>socket.broadcast.emit()</code>, the first one will return the updated price to the user that triggered the event, and the second will do the same to all the other users.</p>
+<h4 class="subtitle"><strong>Writing our First Angular 2 Component</strong></h4>
+<p>Now that we have our server-side ready we can get started with Angular 2, let’s create a folder called <code>app</code> inside <code>public/javascripts/</code> on our project, that’s where we’re going to put all our Angular 2 code. Now create a file and name it <code>app.component.ts</code>, then paste the following code into it:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;"><span style="color: #FF0000;">import</span> <span style="color: #009900;">{</span>Component<span style="color: #009900;">}</span> from <span style="color: #3366CC;">'angular2/core'</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #339933;">@</span>Component<span style="color: #009900;">(</span><span style="color: #009900;">{</span>
+    selector<span style="color: #339933;">:</span> <span style="color: #3366CC;">'auction-app'</span><span style="color: #339933;">,</span>
+    templateUrl<span style="color: #339933;">:</span> <span style="color: #3366CC;">'templates/product.html'</span>
+<span style="color: #009900;">}</span><span style="color: #009900;">)</span>
+&nbsp;
+<span style="color: #FF0000;">export</span> <span style="color: #FF0000;">class</span> AppComponent <span style="color: #009900;">{</span>
+    price<span style="color: #339933;">:</span> number <span style="color: #339933;">=</span> <span style="color: #CC0000;">0.0</span><span style="color: #339933;">;</span>
+    socket <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+    bidValue <span style="color: #339933;">=</span> <span style="color: #3366CC;">''</span><span style="color: #339933;">;</span>
+&nbsp;
+    constructor<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #009900;">{</span>
+        <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">socket</span> <span style="color: #339933;">=</span> io<span style="color: #009900;">(</span><span style="color: #3366CC;">'http://localhost:8000'</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">socket</span>.<span style="color: #660066;">on</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'priceUpdate'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">(</span>data<span style="color: #009900;">)</span><span style="color: #009900;">{</span>
+            <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">price</span> <span style="color: #339933;">=</span> data<span style="color: #339933;">;</span>
+        <span style="color: #009900;">}</span>.<span style="color: #660066;">bind</span><span style="color: #009900;">(</span><span style="color: #000066; font-weight: bold;">this</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>    
+    <span style="color: #009900;">}</span>
+&nbsp;
+    bid<span style="color: #009900;">(</span><span style="color: #009900;">)</span><span style="color: #009900;">{</span>
+        <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">socket</span>.<span style="color: #660066;">emit</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'bid'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">bidValue</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span>
+        <span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">bidValue</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">''</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">}</span>
+<span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>When declaring a <code>@Component</code>, you have to pass an object containing two attributes <code>selector</code> and <code>templateUrl</code> (or just <code>template</code>), the <code>selector</code> is the name we’re going to use to call our component, in this case it’s <code>auction-app</code>, and the <code>templateUrl</code> is the HTML implementation, you can put your HTML code directly on the object or you can put it in a separated file like I did.</p>
+<p>We also have in this code the <code>AppComponent</code> class, that’s kind of the ‘controller’ of our component, in the constructor I’m connecting to the Socket.IO from the server using the method <code>io('http://localhost:8000')</code>, this will emit the <code>connection</code> event we saw before, then I’m creating a listener to the <code>priceUpdate</code> event, the server will emit it right after the connection, remember? When Angular receives the updated price it will assign it to the <code>price</code> variable. This class also contains the <code>bid()</code> function, it will just emit the <code>bid</code> event passing the <code>bidValue</code>.</p>
+<p>I forgot to mention that I created the <code>/template</code> folder inside <code>/views</code>, the problem is that our component doesn’t have access to it, to solve this problem we have to make this folder a static route on our server, open your <code>app.js</code> and add this line:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;">app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'/templates'</span><span style="color: #339933;">,</span> express.<span style="color: #000066; font-weight: bold;">static</span><span style="color: #009900;">(</span>__dirname <span style="color: #339933;">+</span> <span style="color: #3366CC;">'/views/templates/'</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span></pre></td></tr></tbody></table></div>
+
+<p>Now let’s take a look on our template, I’ll not show the full HTML code here, just the lines that interact with our <code>AppComponent</code> class.</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="xml jsj_code_highlight" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;h1<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>$ {{price}}<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/h1<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>	        
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;input</span>  <span style="color: #66cc66;">[</span><span style="color: #66cc66;">(</span>ngModel<span style="color: #66cc66;">)</span><span style="color: #66cc66;">]</span>=<span style="color: #ff0000;">"bidValue"</span> <span style="color: #000000; font-weight: bold;">&gt;</span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;button</span> <span style="color: #66cc66;">(</span>click<span style="color: #66cc66;">)</span>=<span style="color: #ff0000;">"bid()"</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>Place Bid<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/button<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></td></tr></tbody></table></div>
+
+<p>There is not much to explain here, the syntax resembles a lot the first Angular, our <code>input</code> uses the attribute <code>[(ngModel)]</code> to reference the <code>bidValue</code> variable from our class, and the button uses the <code>(click)</code> to call the function <code>bid()</code>.</p>
+<p>To be able to launch our application we have to create a file called <code>main.ts</code> on the <code>public/javascripts/</code> folder, just copy/paste the following into the file:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;"><span style="color: #FF0000;">import</span> <span style="color: #009900;">{</span>bootstrap<span style="color: #009900;">}</span>    from <span style="color: #3366CC;">'angular2/platform/browser'</span>
+<span style="color: #FF0000;">import</span> <span style="color: #009900;">{</span>AppComponent<span style="color: #009900;">}</span> from <span style="color: #3366CC;">'./app.component.js'</span>
+&nbsp;
+bootstrap<span style="color: #009900;">(</span>AppComponent<span style="color: #009900;">)</span><span style="color: #339933;">;</span></pre></td></tr></tbody></table></div>
+
+<p>Finally we can write our <code>index.html</code>, you have already created it in the beginning, remember? It’s located on the <code>/views</code> folder, open it and add the following code:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="xml jsj_code_highlight" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;html<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+  <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;head<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;title<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Live Auction<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/title<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;meta</span> <span style="color: #000066;">name</span>=<span style="color: #ff0000;">"viewport"</span> <span style="color: #000066;">content</span>=<span style="color: #ff0000;">"width=device-width, initial-scale=1"</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>   
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span> 
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"scripts/es6-shim/es6-shim.min.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"scripts/systemjs/dist/system-polyfills.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"scripts/angular2/bundles/angular2-polyfills.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"scripts/systemjs/dist/system.src.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"scripts/rxjs/bundles/Rx.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"scripts/angular2/bundles/angular2.dev.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"javascripts/jquery.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script</span> <span style="color: #000066;">src</span>=<span style="color: #ff0000;">"javascripts/bootstrap.min.js"</span><span style="color: #000000; font-weight: bold;">&gt;</span><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;link</span> <span style="color: #000066;">href</span>=<span style="color: #ff0000;">"stylesheets/bootstrap.min.css"</span> <span style="color: #000066;">rel</span>=<span style="color: #ff0000;">"stylesheet"</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;link</span> <span style="color: #000066;">href</span>=<span style="color: #ff0000;">"stylesheets/portfolio-item.css"</span> <span style="color: #000066;">rel</span>=<span style="color: #ff0000;">"stylesheet"</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+      System.config({
+        packages: {        
+          app: {
+            format: 'register',
+            defaultExtension: 'js'
+          }
+        }
+      });
+      System.import('javascripts/app/main.js')
+            .then(null, console.error.bind(console));
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/script<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+  <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/head<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+  <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;body<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;auction-app<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Loading...<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/auction-app<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+  <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/body<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/html<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></td></tr></tbody></table></div>
+
+<p>Once again we have to edit the <code>app.js</code> file to be able to load the scripts directly from the <code>node_modules</code> folder, add the following line like we did before:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;">app.<span style="color: #660066;">use</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'/scripts'</span><span style="color: #339933;">,</span> express.<span style="color: #000066; font-weight: bold;">static</span><span style="color: #009900;">(</span>__dirname <span style="color: #339933;">+</span> <span style="color: #3366CC;">'/node_modules/'</span><span style="color: #009900;">)</span><span style="color: #009900;">)</span><span style="color: #339933;">;</span></pre></td></tr></tbody></table></div>
+
+<p>This file is pretty simple, we have a script that configures System.js to load our application, and in the body we can call our component by the selector we specified before: <code>auction-app</code>.</p>
+<p>Now we’re done!! You can run your application by opening your terminal and running the command <code>npm start</code>, the result should similar to the gif in the beginning of this tutorial.</p>
+<p>Just leave a comment if you have any problems, I’ll be glad to help!!</p>
+<div class="crafty-social-buttons crafty-social-share-buttons crafty-social-buttons-size-4 crafty-social-buttons-align-left crafty-social-buttons-caption-inline-block"><span class="crafty-social-caption">Share this:</span><ul class="crafty-social-buttons-list"><li><a href="http://www.facebook.com/sharer/sharer.php?u=http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/" class="crafty-social-button csb-facebook hover-brighten" title="Share via Facebook" target="_blank"><img class="crafty-social-button-image" alt="Share via Facebook" width="42" height="42" src="./CreatingLiveAuctionApp_files/facebook.png"></a></li><li><a href="https://plus.google.com/share?url=http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/" class="crafty-social-button csb-google hover-brighten" title="Share via Google" target="_blank"><img class="crafty-social-button-image" alt="Share via Google" width="42" height="42" src="./CreatingLiveAuctionApp_files/google.png"></a></li><li><a href="http://twitter.com/share?url=http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/&amp;text=Creating+a+Live+Auction+App+with+Angular+2%2C+Node.js+and+Socket.IO" class="crafty-social-button csb-twitter hover-brighten" title="Share via Twitter" target="_blank"><img class="crafty-social-button-image" alt="Share via Twitter" width="42" height="42" src="./CreatingLiveAuctionApp_files/twitter.png"></a></li><li><a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/&amp;title=Creating+a+Live+Auction+App+with+Angular+2%2C+Node.js+and+Socket.IO" class="crafty-social-button csb-linkedin hover-brighten" title="Share via LinkedIn" target="_blank"><img class="crafty-social-button-image" alt="Share via LinkedIn" width="42" height="42" src="./CreatingLiveAuctionApp_files/linkedin.png"></a></li><li><a href="http://reddit.com/submit?url=http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/&amp;title=Creating+a+Live+Auction+App+with+Angular+2%2C+Node.js+and+Socket.IO" class="crafty-social-button csb-reddit hover-brighten" title="Share via Reddit" target="_blank"><img class="crafty-social-button-image" alt="Share via Reddit" width="42" height="42" src="./CreatingLiveAuctionApp_files/reddit.png"></a></li></ul></div><div class="yuzo_related_post style-1" data-version="4.9.15"><div class="yuzo_clearfixed yuzo__title"><h3>Recommended for you</h3></div><div class="yuzo_wraps">
+						  <div class="relatedthumb" style="height: 104px;"><span class="equalizer-inner" style="display:block;">  
+							  <img src="./CreatingLiveAuctionApp_files/iconTutorial.png">
+							  <a href="http://4dev.tech/2015/08/angularjs-tutorial-ui-router-example/" target="_blank">
+									  
+								   <span style="font-size:13px;font-weight:bold;">AngularJS Tutorial: ui-router example</span>
+							  
+							  
+							  </a>
+
+						  </span></div>
+						  <div class="relatedthumb" style="height: 104px;"><span class="equalizer-inner" style="display:block;">  
+							  <img src="./CreatingLiveAuctionApp_files/iconTutorial.png">
+							  <a href="http://4dev.tech/2016/02/how-to-execute-a-jar-file-with-node-js-child-processes/" target="_blank">
+									  
+								   <span style="font-size:13px;font-weight:bold;">How to Execute a .jar File with Node.js Child Processes</span>
+							  
+							  
+							  </a>
+
+						  </span></div>
+						  <div class="relatedthumb" style="height: 104px;"><span class="equalizer-inner" style="display:block;">  
+							  <img src="./CreatingLiveAuctionApp_files/iconTutorial.png">
+							  <a href="http://4dev.tech/2015/10/tutorial-ng-table-with-infinite-scroll/" target="_blank">
+									  
+								   <span style="font-size:13px;font-weight:bold;">Tutorial: ng-table with infinite scroll</span>
+							  
+							  
+							  </a>
+
+						  </span></div>
+						  <div class="relatedthumb" style="height: 104px;"><span class="equalizer-inner" style="display:block;">  
+							  <img src="./CreatingLiveAuctionApp_files/iconTutorial.png">
+							  <a href="http://4dev.tech/2016/05/angular2-tutorial-creating-awesome-animated-charts-with-highcharts/" target="_blank">
+									  
+								   <span style="font-size:13px;font-weight:bold;">Angular2 Tutorial: Creating Awesome Animated Charts with Highcharts</span>
+							  
+							  
+							  </a>
+
+						  </span></div>
+						  <div class="relatedthumb" style="height: 89px;"><span class="equalizer-inner" style="display:block;">  
+							  <img src="./CreatingLiveAuctionApp_files/iconTutorial.png">
+							  <a href="http://4dev.tech/2016/01/tutorial-creating-angularjs-services/" target="_blank">
+									  
+								   <span style="font-size:13px;font-weight:bold;">Tutorial: Creating AngularJS Services</span>
+							  
+							  
+							  </a>
+
+						  </span></div>
+						  <div class="relatedthumb" style="height: 89px;"><span class="equalizer-inner" style="display:block;">  
+							  <img src="./CreatingLiveAuctionApp_files/iconTutorial.png">
+							  <a href="http://4dev.tech/2016/05/creating-a-nodejs-project-with-express/" target="_blank">
+									  
+								   <span style="font-size:13px;font-weight:bold;">Creating a NodeJS project with Express</span>
+							  
+							  
+							  </a>
+
+						  </span></div></div> <!-- end wrap -->
+ <style>
+								.yuzo_related_post .relatedthumb{line-height:15px;background: !important;color:!important;}
+								.yuzo_related_post .relatedthumb:hover{background:#2170bf !important; -webkit-transition: background 0.2s linear; -moz-transition: background 0.2s linear; -o-transition: background 0.2s linear; transition: background 0.2s linear;;color:!important;}
+								.yuzo_related_post .relatedthumb a{color:!important;}
+								.yuzo_related_post .relatedthumb a:hover{ color:}!important;}
+								.yuzo_related_post .relatedthumb:hover a{ color:!important;}
+								.yuzo_related_post .relatedthumb:hover .yuzo__text--title{ color:!important;}
+								.yuzo_related_post .yuzo_text, .yuzo_related_post .yuzo_views_post {color:!important;}
+								.yuzo_related_post .relatedthumb:hover .yuzo_text, .yuzo_related_post:hover .yuzo_views_post {color:!important;}
+								.yuzo_related_post .relatedthumb{  margin: 0px  0px  0px  0px;   padding: 5px  5px  5px  5px;  }
+								.yuzo_related_post .relatedthumb .yuzo-img{
+  -webkit-transition:all 0.3s ease-out;
+  -moz-transition:all 0.3s ease-out;
+  -o-transition:all 0.3s ease-out;
+  -ms-transition:all 0.3s ease-out;
+  transition:all 0.3s ease-out;
+}
+.yuzo_related_post .relatedthumb .yuzo-img-wrap{
+  overflow:hidden;
+  background: url(http://4dev.tech/wp-content/plugins/yuzo-related-post/assets/images/link-overlay.png) no-repeat center;
+}
+.yuzo_related_post .relatedthumb:hover .yuzo-img {
+  opacity: 0.7;
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+}
+								</style> <script>
+						  jQuery(document).ready(function( $ ){
+							//jQuery('.yuzo_related_post').equalizer({ overflow : 'relatedthumb' });
+							jQuery('.yuzo_related_post .yuzo_wraps').equalizer({ columns : '> div' });
+						   });
+						  </script> 
+</div>		</div><!-- .posted-entry -->
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+
+					<span class="tags-links">
+				<i class="icon-tags"></i><a href="http://4dev.tech/tag/angular-2/" rel="tag">Angular 2</a>, <a href="http://4dev.tech/tag/angularjs/" rel="tag">AngularJS</a>, <a href="http://4dev.tech/tag/node-js/" rel="tag">Node.js</a>, <a href="http://4dev.tech/tag/real-time-applications/" rel="tag">Real-time Applications</a>, <a href="http://4dev.tech/tag/socket-io/" rel="tag">Socket.IO</a>, <a href="http://4dev.tech/tag/websocket/" rel="tag">WebSocket</a>			</span>
+		
+		<nav class="single-nav cl" role="navigation">
+			<div class="prev"><a href="http://4dev.tech/2016/02/how-to-execute-a-jar-file-with-node-js-child-processes/" rel="prev"><span class="meta-nav">←</span>&nbsp;How to Execute a .jar File with Node.js Child Processes</a></div><div class="next"><a href="http://4dev.tech/2016/02/tutorial-angular-2-datatable-with-sorting-filtering-and-resizable-columns/" rel="next">Tutorial: Angular 2 Datatable with Sorting, Filtering and Resizable Columns&nbsp;<span class="meta-nav">→</span></a></div>		</nav><!-- .single-nav -->
+
+		<div class="author-info"><img alt="" src="./CreatingLiveAuctionApp_files/da65d736e6b1e33aa9d87035713758cb" srcset="http://1.gravatar.com/avatar/da65d736e6b1e33aa9d87035713758cb?s=240&amp;d=mm&amp;r=g 2x" class="avatar avatar-120 photo" height="120" width="120"><div class="author-bio"><h4>Written by &nbsp;Leonardo Jines</h4></div></div>
+	</footer><!-- .entry-footer -->
+</article><!-- #post --><div id="comments" class="comments-area">
+
+			<h3 class="comments-title">
+			19 comments on “<span>Creating a Live Auction App with Angular 2, Node.js and Socket.IO</span>”		</h3>
+
+		
+		<ol class="comment-list">
+							<li class="comment even thread-even depth-1" id="li-comment-1039">
+					<article id="comment-1039" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/06a90f8a8a22fdc0c6a400f517538835" srcset="http://0.gravatar.com/avatar/06a90f8a8a22fdc0c6a400f517538835?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Gabogabu</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1039"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">February 24, 2016 at 8:07 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1039#respond" onclick="return addComment.moveForm( &quot;comment-1039&quot;, &quot;1039&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Gabogabu"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>In your <code>System.config (index.html)</code> I believe you can replace</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;">app<span style="color: #339933;">:</span> <span style="color: #009900;">{</span>
+     format<span style="color: #339933;">:</span> <span style="color: #3366CC;">'register'</span><span style="color: #339933;">,</span>
+     defaultExtension<span style="color: #339933;">:</span> <span style="color: #3366CC;">'js'</span>
+<span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>To</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;">javascript<span style="color: #339933;">:</span> <span style="color: #009900;">{</span>
+     format<span style="color: #339933;">:</span> <span style="color: #3366CC;">'register'</span><span style="color: #339933;">,</span>
+     defaultExtension<span style="color: #339933;">:</span> <span style="color: #3366CC;">'js'</span>
+<span style="color: #009900;">}</span></pre></td></tr></tbody></table></div>
+
+<p>This way you don’t have to write the “js” extension everytime you import a component.</p>
+<p>Ex:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;">System.<span style="color: #FF0000;">import</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'javascripts/app/main'</span><span style="color: #009900;">)</span></pre></td></tr></tbody></table></div>
+
+<p>instead of:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;">System.<span style="color: #FF0000;">import</span><span style="color: #009900;">(</span><span style="color: #3366CC;">'javascripts/app/main.js'</span><span style="color: #009900;">)</span></pre></td></tr></tbody></table></div>
+
+<p>or</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;"><span style="color: #FF0000;">import</span> <span style="color: #009900;">{</span>AppComponent<span style="color: #009900;">}</span> from <span style="color: #3366CC;">'./app.component'</span></pre></td></tr></tbody></table></div>
+
+<p>instead of:</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;"><span style="color: #FF0000;">import</span> <span style="color: #009900;">{</span>AppComponent<span style="color: #009900;">}</span> from <span style="color: #3366CC;">'./app.component.js'</span></pre></td></tr></tbody></table></div>
+
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment byuser comment-author-leonardojines bypostauthor odd alt depth-2" id="li-comment-1041">
+					<article id="comment-1041" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/da65d736e6b1e33aa9d87035713758cb(1)" srcset="http://1.gravatar.com/avatar/da65d736e6b1e33aa9d87035713758cb?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Leonardo Jines</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1041"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">February 24, 2016 at 9:24 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1041#respond" onclick="return addComment.moveForm( &quot;comment-1041&quot;, &quot;1041&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Leonardo Jines"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Thanks for the tip man!</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+				<li class="comment even thread-odd thread-alt depth-1" id="li-comment-1149">
+					<article id="comment-1149" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/8e44b8e92ae4980e4c1df930f653426a" srcset="http://2.gravatar.com/avatar/8e44b8e92ae4980e4c1df930f653426a?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.wuno.com/" rel="external nofollow" class="url">Nicholas Diaz</a></span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1149"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 3:09 am</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1149#respond" onclick="return addComment.moveForm( &quot;comment-1149&quot;, &quot;1149&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Nicholas Diaz"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Hey man thank you for the tutorial. I have ran through about 10 of these tonight (No Joke) but always the same outcome… I have some error that keeps me from the end goal. </p>
+<p>This is seems to be the most simple and easiest to build on so I would really like to get this one working.  I went through your tutorial about 5 times and I still have these same errors. </p>
+<p>When I run npm start  the loaded page just says loading as in the html file.  In the console I get,</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java jsj_code_highlight" style="font-family:monospace;">localhost<span style="color: #339933;">/:</span><span style="color: #cc66cc;">12</span> GET http<span style="color: #339933;">:</span><span style="color: #666666; font-style: italic;">//localhost:3000/javascripts/jquery.js </span>
+localhost<span style="color: #339933;">/:</span><span style="color: #cc66cc;">14</span> GET http<span style="color: #339933;">:</span><span style="color: #666666; font-style: italic;">//localhost:3000/stylesheets/bootstrap.min.css </span>
+localhost<span style="color: #339933;">/:</span><span style="color: #cc66cc;">13</span> GET http<span style="color: #339933;">:</span><span style="color: #666666; font-style: italic;">//localhost:3000/javascripts/bootstrap.min.js </span>
+localhost<span style="color: #339933;">/:</span><span style="color: #cc66cc;">15</span> GET http<span style="color: #339933;">:</span><span style="color: #666666; font-style: italic;">//localhost:3000/stylesheets/portfolio-item.css </span>
+angular2<span style="color: #339933;">-</span>polyfills.<span style="color: #006633;">js</span><span style="color: #339933;">:</span><span style="color: #cc66cc;">1152</span> DEPRECATION WARNING<span style="color: #339933;">:</span> <span style="color: #0000ff;">'enqueueTask'</span> is no longer supported and will be removed in next major release. <span style="color: #006633;">Use</span> addTask<span style="color: #339933;">/</span>addRepeatingTask<span style="color: #339933;">/</span>addMicroTask
+system.<span style="color: #006633;">src</span>.<span style="color: #006633;">js</span><span style="color: #339933;">:</span><span style="color: #cc66cc;">1068</span> GET http<span style="color: #339933;">:</span><span style="color: #666666; font-style: italic;">//localhost:3000/traceur 404 (Not Found)</span>
+angular2<span style="color: #339933;">-</span>polyfills.<span style="color: #006633;">js</span><span style="color: #339933;">:</span><span style="color: #cc66cc;">1243</span> <span style="color: #003399;">Error</span><span style="color: #339933;">:</span> XHR error <span style="color: #009900;">(</span><span style="color: #cc66cc;">404</span> Not Found<span style="color: #009900;">)</span> loading http<span style="color: #339933;">:</span><span style="color: #666666; font-style: italic;">//localhost:3000/traceur(…)</span></pre></td></tr></tbody></table></div>
+
+<p>and in the term</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java jsj_code_highlight" style="font-family:monospace;">GET <span style="color: #339933;">/</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">7.672</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>scripts<span style="color: #339933;">/</span>es6<span style="color: #339933;">-</span>shim<span style="color: #339933;">/</span>es6<span style="color: #339933;">-</span>shim.<span style="color: #006633;">min</span>.<span style="color: #006633;">js</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">4.093</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>scripts<span style="color: #339933;">/</span>systemjs<span style="color: #339933;">/</span>dist<span style="color: #339933;">/</span>system<span style="color: #339933;">-</span>polyfills.<span style="color: #006633;">js</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">3.990</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>scripts<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>bundles<span style="color: #339933;">/</span>angular2<span style="color: #339933;">-</span>polyfills.<span style="color: #006633;">js</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">4.223</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>scripts<span style="color: #339933;">/</span>systemjs<span style="color: #339933;">/</span>dist<span style="color: #339933;">/</span>system.<span style="color: #006633;">src</span>.<span style="color: #006633;">js</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">4.262</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>scripts<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span>bundles<span style="color: #339933;">/</span>Rx.<span style="color: #006633;">js</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">4.249</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>scripts<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>bundles<span style="color: #339933;">/</span>angular2.<span style="color: #006633;">dev</span>.<span style="color: #006633;">js</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">4.225</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>stylesheets<span style="color: #339933;">/</span>bootstrap.<span style="color: #006633;">min</span>.<span style="color: #006633;">css</span> <span style="color: #cc66cc;">404</span> <span style="color: #cc66cc;">2.297</span> ms <span style="color: #339933;">-</span> <span style="color: #cc66cc;">1093</span>
+&nbsp;
+&nbsp;
+GET <span style="color: #339933;">/</span>scripts<span style="color: #339933;">/</span>es6<span style="color: #339933;">-</span>shim<span style="color: #339933;">/</span>es6<span style="color: #339933;">-</span>shim.<span style="color: #006633;">map</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">0.560</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>scripts<span style="color: #339933;">/</span>systemjs<span style="color: #339933;">/</span>dist<span style="color: #339933;">/</span>system<span style="color: #339933;">-</span>polyfills.<span style="color: #006633;">js</span>.<span style="color: #006633;">map</span> <span style="color: #cc66cc;">304</span> <span style="color: #cc66cc;">0.568</span> ms <span style="color: #339933;">-</span> <span style="color: #339933;">-</span>
+GET <span style="color: #339933;">/</span>javascripts<span style="color: #339933;">/</span>app<span style="color: #339933;">/</span>main.<span style="color: #006633;">js</span> <span style="color: #cc66cc;">404</span> <span style="color: #cc66cc;">0.604</span> ms <span style="color: #339933;">-</span> <span style="color: #cc66cc;">1093</span></pre></td></tr></tbody></table></div>
+
+<p>Any ideas?</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment odd alt depth-2" id="li-comment-1412">
+					<article id="comment-1412" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/ead0183a18e6aa5537cbd12022d08d09" srcset="http://2.gravatar.com/avatar/ead0183a18e6aa5537cbd12022d08d09?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Vicheanak</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1412"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">May 8, 2016 at 5:44 am</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1412#respond" onclick="return addComment.moveForm( &quot;comment-1412&quot;, &quot;1412&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Vicheanak"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>has anyone got any solutions to this problem yet? I have ran across the same issue here.<br>
+Thanks</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+				<li class="comment even thread-even depth-1" id="li-comment-1150">
+					<article id="comment-1150" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/8e44b8e92ae4980e4c1df930f653426a" srcset="http://2.gravatar.com/avatar/8e44b8e92ae4980e4c1df930f653426a?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.wuno.com/" rel="external nofollow" class="url">Nicholas Diaz</a></span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1150"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 3:29 am</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1150#respond" onclick="return addComment.moveForm( &quot;comment-1150&quot;, &quot;1150&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Nicholas Diaz"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>I think my problem here is that the typescript in all of the applications I have made tonight are not being compiled to js. </p>
+<p>But why are your compiling when you run npm start and mine are not after following your project verbatim?</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment byuser comment-author-leonardojines bypostauthor odd alt depth-2" id="li-comment-1151">
+					<article id="comment-1151" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/da65d736e6b1e33aa9d87035713758cb(1)" srcset="http://1.gravatar.com/avatar/da65d736e6b1e33aa9d87035713758cb?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Leonardo Jines</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1151"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 5:11 am</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1151#respond" onclick="return addComment.moveForm( &quot;comment-1151&quot;, &quot;1151&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Leonardo Jines"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>What does your terminal show right after you run npm start?</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment even depth-3" id="li-comment-1154">
+					<article id="comment-1154" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/8e44b8e92ae4980e4c1df930f653426a" srcset="http://2.gravatar.com/avatar/8e44b8e92ae4980e4c1df930f653426a?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.wuno.com/" rel="external nofollow" class="url">Nicholas Diaz</a></span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1154"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 11:52 am</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1154#respond" onclick="return addComment.moveForm( &quot;comment-1154&quot;, &quot;1154&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Nicholas Diaz"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java jsj_code_highlight" style="font-family:monospace;">wuno<span style="color: #339933;">:</span>...<span style="color: #006633;">lications</span><span style="color: #339933;">/</span>AMPPS<span style="color: #339933;">/</span>www<span style="color: #339933;">/</span>wunortd<span style="color: #009900;">]</span>$ npm start
+&nbsp;
+<span style="color: #339933;">&amp;</span>gt<span style="color: #339933;">;</span> wunortd@0.0.0 start <span style="color: #339933;">/</span>Applications<span style="color: #339933;">/</span>AMPPS<span style="color: #339933;">/</span>www<span style="color: #339933;">/</span>wunortd
+<span style="color: #339933;">&amp;</span>gt<span style="color: #339933;">;</span> node .<span style="color: #339933;">/</span>bin<span style="color: #339933;">/</span>www</pre></td></tr></tbody></table></div>
+
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment odd alt depth-4" id="li-comment-1156">
+					<article id="comment-1156" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/8e44b8e92ae4980e4c1df930f653426a" srcset="http://2.gravatar.com/avatar/8e44b8e92ae4980e4c1df930f653426a?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.wuno.com/" rel="external nofollow" class="url">Nicholas Diaz</a></span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1156"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 2:01 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1156#respond" onclick="return addComment.moveForm( &quot;comment-1156&quot;, &quot;1156&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Nicholas Diaz"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>I changed this,</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="javascript jsj_code_highlight" style="font-family:monospace;">   <span style="color: #3366CC;">"scripts"</span><span style="color: #339933;">:</span> <span style="color: #009900;">{</span>
+    <span style="color: #3366CC;">"postinstall"</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">"npm run typings install"</span><span style="color: #339933;">,</span>
+    <span style="color: #3366CC;">"tsc"</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">"tsc"</span><span style="color: #339933;">,</span>
+    <span style="color: #3366CC;">"tsc:w"</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">"tsc -w"</span><span style="color: #339933;">,</span>
+    <span style="color: #3366CC;">"start"</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">"concurrent <span style="color: #000099; font-weight: bold;">\"</span>node ./bin/www<span style="color: #000099; font-weight: bold;">\"</span> <span style="color: #000099; font-weight: bold;">\"</span>npm run tsc:w<span style="color: #000099; font-weight: bold;">\"</span>"</span><span style="color: #339933;">,</span>
+    <span style="color: #3366CC;">"typings"</span> <span style="color: #339933;">:</span> <span style="color: #3366CC;">"typings"</span>
+  <span style="color: #009900;">}</span><span style="color: #339933;">,</span></pre></td></tr></tbody></table></div>
+
+<p>I now  I get this</p>
+
+<div class="wp_syntax"><table><tbody><tr><td class="code"><pre class="java jsj_code_highlight" style="font-family:monospace;"> wunortd@0.0.0 start <span style="color: #339933;">/</span>Applications<span style="color: #339933;">/</span>AMPPS<span style="color: #339933;">/</span>www<span style="color: #339933;">/</span>wunortd
+<span style="color: #339933;">&amp;</span>gt<span style="color: #339933;">;</span> concurrent <span style="color: #0000ff;">"node ./bin/www"</span> <span style="color: #0000ff;">"npm run tsc:w"</span>
+&nbsp;
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span>
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> <span style="color: #339933;">&amp;</span>gt<span style="color: #339933;">;</span> wunortd@0.0.0 tsc<span style="color: #339933;">:</span>w <span style="color: #339933;">/</span>Applications<span style="color: #339933;">/</span>AMPPS<span style="color: #339933;">/</span>www<span style="color: #339933;">/</span>wunortd
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> <span style="color: #339933;">&amp;</span>gt<span style="color: #339933;">;</span> tsc <span style="color: #339933;">-</span>w
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span>
+&nbsp;
+&nbsp;
+node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>change_detection<span style="color: #339933;">/</span>parser<span style="color: #339933;">/</span>locals.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">3</span>,<span style="color: #cc66cc;">14</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>change_detection<span style="color: #339933;">/</span>parser<span style="color: #339933;">/</span>locals.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">4</span>,<span style="color: #cc66cc;">42</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>debug<span style="color: #339933;">/</span>debug_node.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">14</span>,<span style="color: #cc66cc;">13</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>debug<span style="color: #339933;">/</span>debug_node.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">24</span>,<span style="color: #cc66cc;">17</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>debug<span style="color: #339933;">/</span>debug_node.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">25</span>,<span style="color: #cc66cc;">17</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>di<span style="color: #339933;">/</span>provider.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">436</span>,<span style="color: #cc66cc;">103</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>di<span style="color: #339933;">/</span>provider.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">436</span>,<span style="color: #cc66cc;">135</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>render<span style="color: #339933;">/</span>api.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">13</span>,<span style="color: #cc66cc;">13</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>core<span style="color: #339933;">/</span>render<span style="color: #339933;">/</span>api.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">14</span>,<span style="color: #cc66cc;">84</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">1</span>,<span style="color: #cc66cc;">25</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'MapConstructor'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">2</span>,<span style="color: #cc66cc;">25</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'SetConstructor'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">4</span>,<span style="color: #cc66cc;">27</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">4</span>,<span style="color: #cc66cc;">39</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">7</span>,<span style="color: #cc66cc;">9</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">8</span>,<span style="color: #cc66cc;">30</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">11</span>,<span style="color: #cc66cc;">43</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">12</span>,<span style="color: #cc66cc;">27</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">14</span>,<span style="color: #cc66cc;">23</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">15</span>,<span style="color: #cc66cc;">25</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">95</span>,<span style="color: #cc66cc;">41</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Set'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">96</span>,<span style="color: #cc66cc;">22</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Set'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>collection.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">97</span>,<span style="color: #cc66cc;">25</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Set'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>lang.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">13</span>,<span style="color: #cc66cc;">17</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>lang.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">14</span>,<span style="color: #cc66cc;">17</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Set'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>lang.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">78</span>,<span style="color: #cc66cc;">59</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">1</span>,<span style="color: #cc66cc;">10</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">3</span>,<span style="color: #cc66cc;">14</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">8</span>,<span style="color: #cc66cc;">32</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">9</span>,<span style="color: #cc66cc;">38</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">10</span>,<span style="color: #cc66cc;">35</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">10</span>,<span style="color: #cc66cc;">93</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">11</span>,<span style="color: #cc66cc;">34</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">12</span>,<span style="color: #cc66cc;">32</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">12</span>,<span style="color: #cc66cc;">149</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>facade<span style="color: #339933;">/</span>promise.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">13</span>,<span style="color: #cc66cc;">43</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>platform<span style="color: #339933;">/</span>browser<span style="color: #339933;">/</span>browser_adapter.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">75</span>,<span style="color: #cc66cc;">33</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>angular2<span style="color: #339933;">/</span>src<span style="color: #339933;">/</span>platform<span style="color: #339933;">/</span>dom<span style="color: #339933;">/</span>dom_adapter.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">85</span>,<span style="color: #cc66cc;">42</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Map'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span>CoreOperators.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">22</span>,<span style="color: #cc66cc;">67</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span>CoreOperators.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">72</span>,<span style="color: #cc66cc;">67</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span>CoreOperators.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">77</span>,<span style="color: #cc66cc;">31</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'PromiseConstructor'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span>CoreOperators.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">77</span>,<span style="color: #cc66cc;">54</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span><span style="color: #003399;">Observable</span>.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">65</span>,<span style="color: #cc66cc;">67</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'PromiseConstructor'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span><span style="color: #003399;">Observable</span>.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">65</span>,<span style="color: #cc66cc;">88</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span><span style="color: #003399;">Observable</span>.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">72</span>,<span style="color: #cc66cc;">84</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span><span style="color: #003399;">Observable</span>.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">77</span>,<span style="color: #cc66cc;">38</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span><span style="color: #003399;">Observable</span>.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">100</span>,<span style="color: #cc66cc;">66</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span><span style="color: #003399;">Observable</span>.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">154</span>,<span style="color: #cc66cc;">66</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span><span style="color: #003399;">Observable</span>.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">159</span>,<span style="color: #cc66cc;">31</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'PromiseConstructor'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> node_modules<span style="color: #339933;">/</span>rxjs<span style="color: #339933;">/</span><span style="color: #003399;">Observable</span>.<span style="color: #006633;">d</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">159</span>,<span style="color: #cc66cc;">54</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'Promise'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> <span style="color: #000000; font-weight: bold;">public</span><span style="color: #339933;">/</span>javascripts<span style="color: #339933;">/</span>app<span style="color: #339933;">/</span>app.<span style="color: #006633;">component</span>.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">14</span>,<span style="color: #cc66cc;">23</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2304<span style="color: #339933;">:</span> Cannot find name <span style="color: #0000ff;">'io'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> <span style="color: #000000; font-weight: bold;">public</span><span style="color: #339933;">/</span>javascripts<span style="color: #339933;">/</span>main.<span style="color: #006633;">ts</span><span style="color: #009900;">(</span><span style="color: #cc66cc;">2</span>,<span style="color: #cc66cc;">28</span><span style="color: #009900;">)</span><span style="color: #339933;">:</span> error TS2307<span style="color: #339933;">:</span> Cannot find module <span style="color: #0000ff;">'./app.component.js'</span>.
+<span style="color: #009900;">[</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">]</span> <span style="color: #cc66cc;">1</span><span style="color: #339933;">:</span>00<span style="color: #339933;">:</span><span style="color: #cc66cc;">19</span> PM <span style="color: #339933;">-</span> Compilation complete. <span style="color: #006633;">Watching</span> <span style="color: #000000; font-weight: bold;">for</span> file changes.</pre></td></tr></tbody></table></div>
+
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+				<li class="comment byuser comment-author-leonardojines bypostauthor even depth-2" id="li-comment-1158">
+					<article id="comment-1158" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/da65d736e6b1e33aa9d87035713758cb(1)" srcset="http://1.gravatar.com/avatar/da65d736e6b1e33aa9d87035713758cb?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Leonardo Jines</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1158"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 4:29 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1158#respond" onclick="return addComment.moveForm( &quot;comment-1158&quot;, &quot;1158&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Leonardo Jines"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Hard to tell what’s wrong, I’ve just uploaded the project to github: <a target="_blank" href="https://github.com/leonardohjines/auctionApp" rel="nofollow">https://github.com/leonardohjines/auctionApp</a>, try this version and see if it makes any difference.</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment odd alt depth-3" id="li-comment-1166">
+					<article id="comment-1166" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/8e44b8e92ae4980e4c1df930f653426a" srcset="http://2.gravatar.com/avatar/8e44b8e92ae4980e4c1df930f653426a?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.wuno.com/" rel="external nofollow" class="url">Nicholas Diaz</a></span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1166"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 9:12 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1166#respond" onclick="return addComment.moveForm( &quot;comment-1166&quot;, &quot;1166&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Nicholas Diaz"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Bro, Thank you!</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+				<li class="comment even thread-odd thread-alt depth-1" id="li-comment-1167">
+					<article id="comment-1167" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/8e44b8e92ae4980e4c1df930f653426a" srcset="http://2.gravatar.com/avatar/8e44b8e92ae4980e4c1df930f653426a?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.wuno.com/" rel="external nofollow" class="url">Nicholas Diaz</a></span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1167"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 9:17 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1167#respond" onclick="return addComment.moveForm( &quot;comment-1167&quot;, &quot;1167&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Nicholas Diaz"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Weird… It works now. </p>
+<p>I think maybe some of the stuff in the project is missing from the tut. Like when do you add bootstrap to the javascripts folder?</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment byuser comment-author-leonardojines bypostauthor odd alt depth-2" id="li-comment-1169">
+					<article id="comment-1169" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/da65d736e6b1e33aa9d87035713758cb(1)" srcset="http://1.gravatar.com/avatar/da65d736e6b1e33aa9d87035713758cb?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Leonardo Jines</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1169"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 9:41 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1169#respond" onclick="return addComment.moveForm( &quot;comment-1169&quot;, &quot;1169&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Leonardo Jines"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>You’re right, I’m sorry, I forgot to mention it on the tutorial, but that is not what caused the compilation problem, the project works fine even without bootstrap and jQuery.</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment even depth-3" id="li-comment-1174">
+					<article id="comment-1174" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/8e44b8e92ae4980e4c1df930f653426a" srcset="http://2.gravatar.com/avatar/8e44b8e92ae4980e4c1df930f653426a?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name"><a href="https://www.wuno.com/" rel="external nofollow" class="url">Nicholas Diaz</a></span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1174"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">March 10, 2016 at 11:26 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1174#respond" onclick="return addComment.moveForm( &quot;comment-1174&quot;, &quot;1174&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Nicholas Diaz"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Oh I agree. I was just mentioning it because when troubleshooting it is quite confusing when there are broken links in the program on top of whatever other problem I was having. Thanks for all your help. This is actually the cleanest startup example of mean angular2 I could find. I think it would be really awesome if you could clarify the things you forgot as well as an explanation of typescript.  I suspect typescript was my problem and it will probably cause a lot of people headaches in the near future.</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+				<li class="comment odd alt thread-even depth-1" id="li-comment-1352">
+					<article id="comment-1352" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/e2a5d827703856b1527fbbf4d6e80948" srcset="http://2.gravatar.com/avatar/e2a5d827703856b1527fbbf4d6e80948?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">ferrufino</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1352"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">April 9, 2016 at 3:15 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1352#respond" onclick="return addComment.moveForm( &quot;comment-1352&quot;, &quot;1352&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to ferrufino"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Bro, you’ve many things missing that makes it annoying for starters. Make that clear and point to your github repo or add the missing files and details as of product.html. </p>
+<p>Thanks for the tuto</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+				<li class="comment even thread-odd thread-alt depth-1" id="li-comment-1444">
+					<article id="comment-1444" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/fca3dfb457655955f59bb157e537d0a0" srcset="http://0.gravatar.com/avatar/fca3dfb457655955f59bb157e537d0a0?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Mike Griffin</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1444"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">May 17, 2016 at 1:32 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1444#respond" onclick="return addComment.moveForm( &quot;comment-1444&quot;, &quot;1444&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Mike Griffin"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Is the source of your project available for download?</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				<ol class="children">
+				<li class="comment byuser comment-author-leonardojines bypostauthor odd alt depth-2" id="li-comment-1446">
+					<article id="comment-1446" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/da65d736e6b1e33aa9d87035713758cb(1)" srcset="http://1.gravatar.com/avatar/da65d736e6b1e33aa9d87035713758cb?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Leonardo Jines</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1446"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">May 17, 2016 at 5:09 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1446#respond" onclick="return addComment.moveForm( &quot;comment-1446&quot;, &quot;1446&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Leonardo Jines"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Yes, here’s the link: <a href="https://github.com/leonardohjines/auctionApp" rel="nofollow">https://github.com/leonardohjines/auctionApp</a></p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+				<li class="comment even thread-even depth-1" id="li-comment-1489">
+					<article id="comment-1489" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/ee9c41ff312c2e30ee660f05596ef431" srcset="http://2.gravatar.com/avatar/ee9c41ff312c2e30ee660f05596ef431?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Krishna</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1489"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">May 26, 2016 at 4:57 am</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1489#respond" onclick="return addComment.moveForm( &quot;comment-1489&quot;, &quot;1489&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Krishna"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Please update to angular 2 release candidate</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+				<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-1533">
+					<article id="comment-1533" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/620c5657f744cd840402b20572bcea6c" srcset="http://0.gravatar.com/avatar/620c5657f744cd840402b20572bcea6c?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Jack Hopkins</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1533"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">June 8, 2016 at 9:40 am</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1533#respond" onclick="return addComment.moveForm( &quot;comment-1533&quot;, &quot;1533&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Jack Hopkins"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Please update to angular 2 release candidate</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+				<li class="comment even thread-even depth-1" id="li-comment-1739">
+					<article id="comment-1739" class="comment-body" itemprop="comment" itemscope="itemscope" itemtype="http://schema.org/UserComments">
+						<img alt="" src="./CreatingLiveAuctionApp_files/6d3449f4950d8e4c493bd9366a0886e5" srcset="http://0.gravatar.com/avatar/6d3449f4950d8e4c493bd9366a0886e5?s=100&amp;d=mm&amp;r=g 2x" class="avatar avatar-50 photo" height="50" width="50">						<div class="comment-entry">
+							<header class="comment-meta">
+								<cite class="comment-author" itemprop="creator" itemscope="itemscope" itemtype="http://schema.org/Person"><span itemprop="name">Stefan Benz</span></cite><a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#comment-1739"><time itemprop="commentTime" itemscope="itemscope" datetime="2016-02-21T14:18:04+00:00">July 23, 2016 at 7:51 pm</time></a>								<div class="action-link">
+									<a class="comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/?replytocom=1739#respond" onclick="return addComment.moveForm( &quot;comment-1739&quot;, &quot;1739&quot;, &quot;respond&quot;, &quot;994&quot; )" aria-label="Reply to Stefan Benz"><span>Reply</span></a>								</div><!-- .action-link -->
+							</header>
+
+							<section class="comment-content comment" itemprop="commentText">
+								<p>Great job. Thanks a lot for publishing</p>
+							</section><!-- .comment-content -->
+						</div>
+
+					</article><!-- #comment- -->
+				</li><!-- #comment-## -->
+		</ol><!-- .comment-list -->
+
+								<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://4dev.tech/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+																			<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true" required="required"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" aria-describedby="email-notes" aria-required="true" required="required"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" value="" size="30"></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-describedby="form-allowed-tags" aria-required="true" required="required"></textarea></p>						<p class="form-allowed-tags" id="form-allowed-tags">Obs: Use the tag <code>&lt;pre lang="LANGUAGE"&gt;</code> to include code blocks to your comment.<br>Example: <code>&lt;pre lang="javascript"&gt; console.log('Test'); &lt;/pre&gt;</code></p>
+						<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="994" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="1a7111bb28"></p>					<input type="hidden" id="ak_js" name="ak_js" value="1469560670120"></form>
+							</div><!-- #respond -->
+			
+</div><!-- #comments -->
+
+		</main><!-- #main -->
+
+			<div id="primary-sidebar" class="primary-sidebar" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">
+		<aside id="categories-2" class="widget widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-48"><a href="http://4dev.tech/category/android/">Android</a>
+</li>
+	<li class="cat-item cat-item-80"><a href="http://4dev.tech/category/angularjs/angular-2/">Angular 2</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="http://4dev.tech/category/angularjs/">AngularJS</a>
+</li>
+	<li class="cat-item cat-item-53"><a href="http://4dev.tech/category/articles/">Articles</a>
+</li>
+	<li class="cat-item cat-item-76"><a href="http://4dev.tech/category/artificial-intelligence/">Artificial Intelligence</a>
+</li>
+	<li class="cat-item cat-item-36"><a href="http://4dev.tech/category/devops/">DevOps</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://4dev.tech/category/java-ee/ejb/">EJB</a>
+</li>
+	<li class="cat-item cat-item-31"><a href="http://4dev.tech/category/flux/">Flux</a>
+</li>
+	<li class="cat-item cat-item-92"><a href="http://4dev.tech/category/glassfish/">Glassfish</a>
+</li>
+	<li class="cat-item cat-item-15"><a href="http://4dev.tech/category/java/">Java</a>
+</li>
+	<li class="cat-item cat-item-21"><a href="http://4dev.tech/category/java-8/">Java 8</a>
+</li>
+	<li class="cat-item cat-item-2"><a href="http://4dev.tech/category/java-ee/">Java EE</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="http://4dev.tech/category/javascript/">JavaScript</a>
+</li>
+	<li class="cat-item cat-item-24"><a href="http://4dev.tech/category/mongodb/">MongoDB</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="http://4dev.tech/category/angularjs/ng-table/">ng-Table</a>
+</li>
+	<li class="cat-item cat-item-18"><a href="http://4dev.tech/category/angularjs/nginfinitescroll/">ngInfiniteScroll</a>
+</li>
+	<li class="cat-item cat-item-28"><a href="http://4dev.tech/category/node-js/">Node.js</a>
+</li>
+	<li class="cat-item cat-item-32"><a href="http://4dev.tech/category/react/">React</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://4dev.tech/category/uncategorized/">Uncategorised</a>
+</li>
+	<li class="cat-item cat-item-43"><a href="http://4dev.tech/category/wildfly/">Wildfly</a>
+</li>
+		</ul>
+</aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h3 class="widget-title">Recent Posts</h3>		<ul>
+					<li>
+				<a href="http://4dev.tech/2016/07/passing-parameters-to-an-angular2-component/">Passing Parameters to an Angular2 Component</a>
+						</li>
+					<li>
+				<a href="http://4dev.tech/2016/07/using-http-client-to-integrate-angular2-to-php/">Integrating an Angular2 app with an PHP app</a>
+						</li>
+					<li>
+				<a href="http://4dev.tech/2016/06/adding-the-multiselect-feature-to-an-angular2-autocomplete/">Adding the Multiselect feature to an Angular2 Autocomplete</a>
+						</li>
+					<li>
+				<a href="http://4dev.tech/2016/05/angular2-tutorial-creating-awesome-animated-charts-with-highcharts/">Angular2 Tutorial: Creating Awesome Animated Charts with Highcharts</a>
+						</li>
+					<li>
+				<a href="http://4dev.tech/2016/05/using-jquery-with-angular2/">Using jQuery with Angular2</a>
+						</li>
+				</ul>
+		</aside><aside id="tag_cloud-2" class="widget widget_tag_cloud"><h3 class="widget-title">Tag Cloud</h3><div class="tagcloud"><a href="http://4dev.tech/tag/android/" class="tag-link-49" title="1 topic" style="font-size: 8pt;">Android</a>
+<a href="http://4dev.tech/tag/angular-2/" class="tag-link-81" title="12 topics" style="font-size: 20.886363636364pt;">Angular 2</a>
+<a href="http://4dev.tech/tag/angularjs/" class="tag-link-12" title="14 topics" style="font-size: 22pt;">AngularJS</a>
+<a href="http://4dev.tech/tag/angularjs-directives/" class="tag-link-27" title="1 topic" style="font-size: 8pt;">AngularJS Directives</a>
+<a href="http://4dev.tech/tag/autocomplete/" class="tag-link-89" title="2 topics" style="font-size: 10.863636363636pt;">Autocomplete</a>
+<a href="http://4dev.tech/tag/aws/" class="tag-link-58" title="1 topic" style="font-size: 8pt;">AWS</a>
+<a href="http://4dev.tech/tag/babel/" class="tag-link-66" title="2 topics" style="font-size: 10.863636363636pt;">Babel</a>
+<a href="http://4dev.tech/tag/browserify/" class="tag-link-61" title="1 topic" style="font-size: 8pt;">browserify</a>
+<a href="http://4dev.tech/tag/cloud-computing-services/" class="tag-link-42" title="1 topic" style="font-size: 8pt;">Cloud Computing Services</a>
+<a href="http://4dev.tech/tag/connection-pool/" class="tag-link-45" title="1 topic" style="font-size: 8pt;">Connection Pool</a>
+<a href="http://4dev.tech/tag/cors/" class="tag-link-60" title="1 topic" style="font-size: 8pt;">CORS</a>
+<a href="http://4dev.tech/tag/devops/" class="tag-link-39" title="1 topic" style="font-size: 8pt;">DevOps</a>
+<a href="http://4dev.tech/tag/digitalocean/" class="tag-link-41" title="1 topic" style="font-size: 8pt;">DigitalOcean</a>
+<a href="http://4dev.tech/tag/ejb/" class="tag-link-5" title="1 topic" style="font-size: 8pt;">EJB</a>
+<a href="http://4dev.tech/tag/emerging-technologies/" class="tag-link-54" title="1 topic" style="font-size: 8pt;">emerging technologies</a>
+<a href="http://4dev.tech/tag/es6/" class="tag-link-64" title="1 topic" style="font-size: 8pt;">ES6</a>
+<a href="http://4dev.tech/tag/es2015/" class="tag-link-65" title="1 topic" style="font-size: 8pt;">ES2015</a>
+<a href="http://4dev.tech/tag/first-class-functions/" class="tag-link-23" title="1 topic" style="font-size: 8pt;">First-class Functions</a>
+<a href="http://4dev.tech/tag/fixed-data-table/" class="tag-link-68" title="2 topics" style="font-size: 10.863636363636pt;">fixed-data-table</a>
+<a href="http://4dev.tech/tag/flux/" class="tag-link-33" title="1 topic" style="font-size: 8pt;">Flux</a>
+<a href="http://4dev.tech/tag/infinite-scroll/" class="tag-link-19" title="2 topics" style="font-size: 10.863636363636pt;">Infinite Scroll</a>
+<a href="http://4dev.tech/tag/java/" class="tag-link-4" title="3 topics" style="font-size: 12.772727272727pt;">Java</a>
+<a href="http://4dev.tech/tag/java-8/" class="tag-link-22" title="1 topic" style="font-size: 8pt;">Java 8</a>
+<a href="http://4dev.tech/tag/java-ee/" class="tag-link-17" title="4 topics" style="font-size: 14.363636363636pt;">Java EE</a>
+<a href="http://4dev.tech/tag/javascript/" class="tag-link-14" title="7 topics" style="font-size: 17.545454545455pt;">JavaScript</a>
+<a href="http://4dev.tech/tag/jsx/" class="tag-link-63" title="1 topic" style="font-size: 8pt;">JSX</a>
+<a href="http://4dev.tech/tag/listview/" class="tag-link-50" title="1 topic" style="font-size: 8pt;">ListView</a>
+<a href="http://4dev.tech/tag/mongodb/" class="tag-link-25" title="1 topic" style="font-size: 8pt;">MongoDB</a>
+<a href="http://4dev.tech/tag/ng-table/" class="tag-link-13" title="1 topic" style="font-size: 8pt;">ng-Table</a>
+<a href="http://4dev.tech/tag/nginfinitescroll/" class="tag-link-52" title="1 topic" style="font-size: 8pt;">ngInfiniteScroll</a>
+<a href="http://4dev.tech/tag/ngtable/" class="tag-link-51" title="1 topic" style="font-size: 8pt;">ngTable</a>
+<a href="http://4dev.tech/tag/node-js/" class="tag-link-29" title="7 topics" style="font-size: 17.545454545455pt;">Node.js</a>
+<a href="http://4dev.tech/tag/nosql/" class="tag-link-26" title="1 topic" style="font-size: 8pt;">NoSQL</a>
+<a href="http://4dev.tech/tag/react/" class="tag-link-34" title="1 topic" style="font-size: 8pt;">React</a>
+<a href="http://4dev.tech/tag/reactify/" class="tag-link-62" title="1 topic" style="font-size: 8pt;">reactify</a>
+<a href="http://4dev.tech/tag/reactjs/" class="tag-link-35" title="6 topics" style="font-size: 16.75pt;">ReactJS</a>
+<a href="http://4dev.tech/tag/real-time-applications/" class="tag-link-83" title="2 topics" style="font-size: 10.863636363636pt;">Real-time Applications</a>
+<a href="http://4dev.tech/tag/rest/" class="tag-link-20" title="1 topic" style="font-size: 8pt;">REST</a>
+<a href="http://4dev.tech/tag/restful/" class="tag-link-7" title="1 topic" style="font-size: 8pt;">RESTful</a>
+<a href="http://4dev.tech/tag/servletcontextlistener/" class="tag-link-16" title="1 topic" style="font-size: 8pt;">ServletContextListener</a>
+<a href="http://4dev.tech/tag/socket-io/" class="tag-link-82" title="2 topics" style="font-size: 10.863636363636pt;">Socket.IO</a>
+<a href="http://4dev.tech/tag/ui-router/" class="tag-link-30" title="1 topic" style="font-size: 8pt;">ui-router</a>
+<a href="http://4dev.tech/tag/web-services/" class="tag-link-6" title="5 topics" style="font-size: 15.636363636364pt;">Web Services</a>
+<a href="http://4dev.tech/tag/websocket/" class="tag-link-87" title="2 topics" style="font-size: 10.863636363636pt;">WebSocket</a>
+<a href="http://4dev.tech/tag/wildfly/" class="tag-link-44" title="1 topic" style="font-size: 8pt;">Wildfly</a></div>
+<div class="googlepublisherpluginad" style="text-align: center; width: 100%; height: auto; clear: none;"><ins class="adsbygoogle" data-ad-client="ca-pub-2385181970702192" data-ad-slot="7450691262" data-ad-format="auto" data-ad-channel="WordPressSinglePost+pso-lv-8" data-tag-origin="pso" data-adsbygoogle-status="done" style="display: block; margin: 10px auto; height: 600px; background-color: transparent;"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:230px;background-color:transparent"><ins id="aswift_1_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:230px;background-color:transparent"><iframe width="230" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;" src="./CreatingLiveAuctionApp_files/saved_resource(1).html"></iframe></ins></ins></ins></div></aside><div class="googlepublisherpluginad" style="text-align: center; width: 100%; height: auto; clear: none;"><ins class="adsbygoogle" data-ad-client="ca-pub-2385181970702192" data-ad-slot="1928658464" data-ad-format="auto" data-ad-channel="WordPressSinglePost+pso-lv-8" data-tag-origin="pso" data-adsbygoogle-status="done" style="display: block; margin: 10px auto 30px; height: 600px; background-color: transparent;"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:270px;background-color:transparent"><ins id="aswift_2_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:270px;background-color:transparent"><iframe width="270" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;" src="./CreatingLiveAuctionApp_files/saved_resource(2).html"></iframe></ins></ins></ins></div>	</div>
+
+	</div><!-- #primary -->
+
+			</div><!-- .container -->
+
+		</div><!-- #content -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo" itemscope="itemscope" itemtype="http://schema.org/WPFooter">
+			<div class="container">
+				<div class="logo-footer">
+					<a href="http://4dev.tech/" rel="home"><img src="./CreatingLiveAuctionApp_files/novoLogoRP.png" alt="4Dev Web Development Tutorials"></a>
+				</div><!-- .logo-footer -->
+				<div class="site-info">
+					<b>4Dev</b> © 2015 by <b>Leonardo Jines</b>				</div><!-- .site-info -->
+			</div>
+		</footer><!-- #colophon -->
+	</div><!-- .container -->
+	<a href="http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/#" class="back-to-top" style="display: inline;"><i class="icon-angle-up"></i></a>
+<!-- #page -->
+
+<style>.yuzo_related_post{}
+.yuzo_related_post .relatedthumb{}</style><script type="text/javascript">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-66395671-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/form.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var jsjCodeHighlightOptions = {"settings":{"add_line_numbers":1,"tab_replacement":0,"tab_number_ratio":4},"name_space":"jsj_code_highlight"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/jsj-code-highlight.js"></script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/jquery.equalizer.js"></script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/owl.carousel.js"></script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/jquery.singlePageNav.js"></script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/main.js"></script>
+<script type="text/javascript" src="./CreatingLiveAuctionApp_files/comment-reply.min.js"></script>
+
+
+<iframe id="google_osd_static_frame_8089807551225" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./CreatingLiveAuctionApp_files/saved_resource(3).html"></iframe></body></html>
